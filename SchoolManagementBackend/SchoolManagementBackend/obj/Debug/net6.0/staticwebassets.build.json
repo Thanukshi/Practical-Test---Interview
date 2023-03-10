@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "BayCh0ImlHYNTLfsZuqzKkCwdY5VOf0YzghxIU9WQ+8=",
+  "Source": "SchoolManagementBackend",
+  "BasePath": "_content/SchoolManagementBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

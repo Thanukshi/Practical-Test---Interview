@@ -229,11 +229,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Practical Test - Interview\\Backend\\SchoolManagementBackend\\SchoolManagementBackend\\SchoolManagementBackend.csproj",
+      "projectUniqueName": "E:\\Practical Test - Interview\\SchoolManagementBackend\\SchoolManagementBackend\\SchoolManagementBackend.csproj",
       "projectName": "SchoolManagementBackend",
-      "projectPath": "E:\\Practical Test - Interview\\Backend\\SchoolManagementBackend\\SchoolManagementBackend\\SchoolManagementBackend.csproj",
+      "projectPath": "E:\\Practical Test - Interview\\SchoolManagementBackend\\SchoolManagementBackend\\SchoolManagementBackend.csproj",
       "packagesPath": "C:\\Users\\Thanukshi\\.nuget\\packages\\",
-      "outputPath": "E:\\Practical Test - Interview\\Backend\\SchoolManagementBackend\\SchoolManagementBackend\\obj\\",
+      "outputPath": "E:\\Practical Test - Interview\\SchoolManagementBackend\\SchoolManagementBackend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Thanukshi\\AppData\\Roaming\\NuGet\\NuGet.Config",
