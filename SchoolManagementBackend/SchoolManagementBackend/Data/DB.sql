@@ -1,11 +1,12 @@
-CREATE TABLE ClassroomTable (
-    ClassroomID varchar(10) NOT NULL,
+CREATE TABLE Classroom (
+    ClassroomID int NOT NULL Identity(1,1),
     ClassroomName varchar(50) NOT NULL,
+	DateCreated DateTime NOT NULL,
     PRIMARY KEY (ClassroomID)
 );
 
-CREATE TABLE StudentTable (
-	StudentID varchar(10) NOT NULL,
+CREATE TABLE Student (
+	StudentID int NOT NULL Identity(1,1),
     FirstName varchar(50) NOT NULL,
     LastName varchar(50) NOT NULL,
     ContactPersonName varchar(100) NOT NULL,
@@ -15,29 +16,37 @@ CREATE TABLE StudentTable (
 	Age int NOT NULL,
 
     PRIMARY KEY (StudentID),
-	ClassroomID varchar(10) FOREIGN KEY REFERENCES ClassroomTable(ClassroomID)	
+	ClassroomID int FOREIGN KEY REFERENCES Classroom(ClassroomID),
+
+	DateCreated DateTime NOT NULL
 )
 
-CREATE TABLE TeacherTable (
-	TeacherID varchar(10) NOT NULL,
+CREATE TABLE Teacher (
+	TeacherID int NOT NULL Identity(1,1),
     FirstName varchar(50) NOT NULL,
     LastName varchar(50) NOT NULL,
     ContactNo varchar(10) NOT NULL,
 	Email varchar(100) NOT NULL,
+	DateCreated DateTime NOT NULL,
 
     PRIMARY KEY (TeacherID)
 )
 
-CREATE TABLE SubjectTable (
-    SubjectID varchar(10) NOT NULL,
+CREATE TABLE Subjects (
+    SubjectID int NOT NULL Identity(1,1),
     SubjectName varchar(50) NOT NULL,
+	DateCreated DateTime NOT NULL,
+
     PRIMARY KEY (SubjectID)
 );
 
-CREATE TABLE AllocateSubjectsTable (
-    AllocateSubjectID varchar(10) NOT NULL,	
+CREATE TABLE AllocateSubjects (
+    AllocateSubjectID int NOT NULL Identity(1,1),
+
     PRIMARY KEY (AllocateSubjectID),	
-	SubjectID varchar(10) FOREIGN KEY REFERENCES SubjectTable(SubjectID),	
-	TeacherID varchar(10) FOREIGN KEY REFERENCES TeacherTable(TeacherID)
+	SubjectID int FOREIGN KEY REFERENCES Subjects(SubjectID),	
+	TeacherID int FOREIGN KEY REFERENCES Teacher(TeacherID),
+
+	DateCreated DateTime NOT NULL
 );
  

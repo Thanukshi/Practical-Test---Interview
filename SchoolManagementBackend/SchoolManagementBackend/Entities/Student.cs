@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SchoolManagementBackend.Models
+namespace SchoolManagementBackend.Entities
 {
-    public partial class StudentTable
+    public partial class Student
     {
-        public string StudentId { get; set; } = null!;
+        public int StudentId { get; set; }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string ContactPersonName { get; set; } = null!;
@@ -13,8 +13,9 @@ namespace SchoolManagementBackend.Models
         public string Email { get; set; } = null!;
         public DateTime Dbo { get; set; }
         public int Age { get; set; }
-        public string? ClassroomId { get; set; }
+        public int? ClassroomId { get; set; }
+        public DateTime DateCreated { get; set; }
 
-        public virtual ClassroomTable? Classroom { get; set; }
+        public virtual Classroom? Classroom { get; set; }
     }
 }
