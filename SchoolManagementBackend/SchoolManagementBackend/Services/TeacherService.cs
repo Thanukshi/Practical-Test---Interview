@@ -111,9 +111,9 @@ namespace SchoolManagementBackend.Services
                     _dbContext.Teachers.Remove(teacher);
                     await _dbContext.SaveChangesAsync();
 
-                    var classess = _dbContext.Classrooms.ToList();
+                    var teacherList = _dbContext.Teachers.ToList();
 
-                    return new BaseResponseService().GetSuccessResponse(classess);
+                    return new BaseResponseService().GetSuccessResponse(teacherList);
                 }
             }
             catch (Exception ex)
