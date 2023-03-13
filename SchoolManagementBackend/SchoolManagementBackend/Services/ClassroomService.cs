@@ -41,46 +41,46 @@ namespace SchoolManagementBackend.Services
             }
         }
 
-        public async Task<BaseResponse> GetAllClassDetails()
+        public Task<BaseResponse> GetAllClassDetails()
         {
             try
             {
                 var ClassDetails = _dbContext.Classrooms.ToList();
                 if (ClassDetails == null)
                 {
-                    return new BaseResponseService().GetErrorResponse("Classrooms are not found");
+                    return Task.FromResult(new BaseResponseService().GetErrorResponse("Classrooms are not found"));
                 }
                 else
                 {
-                    return new BaseResponseService().GetSuccessResponse(ClassDetails);
+                    return Task.FromResult(new BaseResponseService().GetSuccessResponse(ClassDetails));
                 }
 
             }
             catch (Exception ex)
             {
-                return new BaseResponseService().GetErrorResponse(ex);
+                return Task.FromResult(new BaseResponseService().GetErrorResponse(ex));
             }
         }
 
 
-        public async Task<BaseResponse> GetClassroomByID(int id)
+        public Task<BaseResponse> GetClassroomByID(int id)
         {
             try
             {
                 var ClassDetails = _dbContext.Classrooms.Where(x => x.ClassroomId == id).FirstOrDefault();
                 if (ClassDetails == null)
                 {
-                    return new BaseResponseService().GetErrorResponse($"This {id} does not exist.");
+                    return Task.FromResult(new BaseResponseService().GetErrorResponse($"This {id} does not exist."));
                 }
                 else
                 {
-                    return new BaseResponseService().GetSuccessResponse(ClassDetails);
+                    return Task.FromResult(new BaseResponseService().GetSuccessResponse(ClassDetails));
                 }
 
             }
             catch (Exception ex)
             {
-                return new BaseResponseService().GetErrorResponse(ex);
+                return Task.FromResult(new BaseResponseService().GetErrorResponse(ex));
             }
         }
 
@@ -127,9 +127,6 @@ namespace SchoolManagementBackend.Services
                 }
                 else
                 {
-                    _dbContext.Classrooms.Update(classroom);
-                    await _dbContext.SaveChangesAsync();
-
                     return new BaseResponseService().GetSuccessResponse($"This {classroom.ClassroomName} is already used.");
                 }
         

@@ -13,6 +13,8 @@ builder.Services.AddControllers();
 
 //Dependency Injection
 builder.Services.AddTransient<IClassroomService, ClassroomService>();
+builder.Services.AddTransient<ISubjectService, SubjectService>();
+builder.Services.AddTransient<ITeacherService, TeacherService>();
 
 //Add db context
 builder.Services.AddDbContext<MyDBContext>(options =>
