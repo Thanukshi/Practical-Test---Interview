@@ -85,3 +85,10 @@ E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\ob
 E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\obj\Debug\net6.0\SchoolManagementBackend.pdb
 E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\obj\Debug\net6.0\SchoolManagementBackend.genruntimeconfig.cache
 E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\obj\Debug\net6.0\ref\SchoolManagementBackend.dll
+E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\bin\Debug\net6.0\System.Text.Json.dll
+E:\Practical Test - Interview\SchoolManagementBackend\SchoolManagementBackend\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
