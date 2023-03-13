@@ -15,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<IClassroomService, ClassroomService>();
 builder.Services.AddTransient<ISubjectService, SubjectService>();
 builder.Services.AddTransient<ITeacherService, TeacherService>();
+builder.Services.AddTransient<IStudentsService, StudentsService>();
 
 //Add db context
 builder.Services.AddDbContext<MyDBContext>(options =>
