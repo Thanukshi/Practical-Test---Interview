@@ -14,7 +14,6 @@ namespace SchoolManagementBackend.Entities
         public DateTime Dbo { get; set; }
         public int Age { get; set; }
         public int? ClassroomId { get; set; }
-        public DateTime DateCreated { get; set; }
 
         public virtual Classroom? Classroom { get; set; }
     }

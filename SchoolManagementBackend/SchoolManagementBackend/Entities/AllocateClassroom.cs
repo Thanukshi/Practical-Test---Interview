@@ -10,7 +10,6 @@ namespace SchoolManagementBackend.Entities
         public int? TeacherId { get; set; }
 
         public int? ClassroomID { get; set; }
-        public DateTime DateCreated { get; set; }
 
         public virtual Classroom? Classroom { get; set; }
         public virtual Teacher? Teacher { get; set; }

@@ -8,11 +8,11 @@ namespace SchoolManagementBackend.Entities
         public Classroom()
         {
             Students = new HashSet<Student>();
+            AllocateClassrooms = new HashSet<AllocateClassroom>();
         }
 
         public int ClassroomId { get; set; }
-        public string ClassroomName { get; set; } = null!;
-        public DateTime DateCreated { get; set; }
+        public string ClassroomName { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }
 

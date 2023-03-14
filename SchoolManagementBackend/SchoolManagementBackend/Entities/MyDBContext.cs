@@ -33,8 +33,6 @@ namespace SchoolManagementBackend.Entities
             {
                 entity.Property(e => e.AllocateSubjectId).HasColumnName("AllocateSubjectID");
 
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
-
                 entity.Property(e => e.SubjectId).HasColumnName("SubjectID");
 
                 entity.Property(e => e.TeacherId).HasColumnName("TeacherID");
@@ -53,8 +51,6 @@ namespace SchoolManagementBackend.Entities
             modelBuilder.Entity<AllocateClassroom>(entity =>
             {
                 entity.Property(e => e.AllocateClassroomID).HasColumnName("AllocateClassroomID");
-
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.ClassroomID).HasColumnName("ClassroomID");
 
@@ -81,7 +77,6 @@ namespace SchoolManagementBackend.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Student>(entity =>
@@ -99,8 +94,6 @@ namespace SchoolManagementBackend.Entities
                 entity.Property(e => e.ContactPersonName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.Dbo)
                     .HasColumnType("date")
@@ -128,8 +121,6 @@ namespace SchoolManagementBackend.Entities
             {
                 entity.Property(e => e.SubjectId).HasColumnName("SubjectID");
 
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
-
                 entity.Property(e => e.SubjectName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -144,8 +135,6 @@ namespace SchoolManagementBackend.Entities
                 entity.Property(e => e.ContactNo)
                     .HasMaxLength(10)
                     .IsUnicode(false);
-
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(100)
