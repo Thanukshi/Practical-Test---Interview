@@ -123,7 +123,7 @@ namespace SchoolManagementBackend.Controllers
             }
         }
 
-        
+
         [HttpDelete("RemoveTeacher/{id}")]
         public async Task<ActionResult> RemoveTeacher(int id)
         {
@@ -158,7 +158,7 @@ namespace SchoolManagementBackend.Controllers
             }
         }
 
-        
+
         [HttpPut("UpdateTeacher")]
         public async Task<ActionResult> UpdateTeacher(Teacher teacher)
         {

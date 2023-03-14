@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using SchoolManagementBackend.Entities;
 using SchoolManagementBackend.ErrorHandler;
 using SchoolManagementBackend.Models;
 
@@ -36,7 +35,7 @@ namespace SchoolManagementBackend.ResponseHandler
         {
             if (ex.Number == 50005)
             {
-                return new BaseResponse() { StatusCode = CommonErrors.CodeInternal, Success = false, Message = ex.Message,  ErrorType = CommonErrors.GlobalInternal, Data = ex, ExceptionNumber = ex.Number };
+                return new BaseResponse() { StatusCode = CommonErrors.CodeInternal, Success = false, Message = ex.Message, ErrorType = CommonErrors.GlobalInternal, Data = ex, ExceptionNumber = ex.Number };
             }
             return GetErrorResponse((Exception)ex);
         }

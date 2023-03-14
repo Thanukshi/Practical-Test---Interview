@@ -47,7 +47,7 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                
+
                 var ASDetails = (from al in _dbContext.AllocateSubjects
                                  join sb in _dbContext.Subjects on al.SubjectId equals sb.SubjectId
                                  join t in _dbContext.Teachers on al.TeacherId equals t.TeacherId
@@ -58,7 +58,7 @@ namespace SchoolManagementBackend.Services
                                      t,
                                  }).ToList();
 
-                
+
 
                 //var role = _dbContext.AllocateSubjects.Include(r => r.SubjectId).Where(t => t.TeacherId).ToList();
 

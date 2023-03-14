@@ -123,7 +123,7 @@ namespace SchoolManagementBackend.Controllers
             }
         }
 
-        
+
         [HttpDelete("RemoveClassroom/{id}")]
         public async Task<ActionResult> RemoveSubject(int id)
         {
@@ -158,13 +158,13 @@ namespace SchoolManagementBackend.Controllers
             }
         }
 
-        
+
         [HttpPut("UpdateSubject")]
         public async Task<ActionResult> UpdateSubject(Subject subject)
         {
             try
             {
-                var result = await _subjectService.UpdateSubject(subject); 
+                var result = await _subjectService.UpdateSubject(subject);
                 if (result.Success)
                     return Ok(result);
                 else

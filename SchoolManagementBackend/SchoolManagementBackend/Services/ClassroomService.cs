@@ -118,7 +118,7 @@ namespace SchoolManagementBackend.Services
             try
             {
                 var className = _dbContext.Classrooms.AsNoTracking().Where(x => x.ClassroomName == classroom.ClassroomName).FirstOrDefault();
-                if(className is null)
+                if (className is null)
                 {
                     _dbContext.Classrooms.Update(classroom);
                     await _dbContext.SaveChangesAsync();
@@ -129,7 +129,7 @@ namespace SchoolManagementBackend.Services
                 {
                     return new BaseResponseService().GetSuccessResponse($"This {classroom.ClassroomName} is already used.");
                 }
-        
+
 
             }
             catch (Exception ex)

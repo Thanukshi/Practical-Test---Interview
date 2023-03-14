@@ -17,10 +17,11 @@ namespace SchoolManagementBackend.Entities
         }
 
         public virtual DbSet<AllocateSubject> AllocateSubjects { get; set; }
+        public virtual DbSet<AllocateClassroom> AllocateClassrooms { get; set; }
         public virtual DbSet<Classroom> Classrooms { get; set; }
-        public virtual DbSet<Student> Students { get; set; } 
-        public virtual DbSet<Subject> Subjects { get; set; } 
-        public virtual DbSet<Teacher> Teachers { get; set; } 
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<Teacher> Teachers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -41,12 +42,33 @@ namespace SchoolManagementBackend.Entities
                 entity.HasOne(d => d.Subject)
                     .WithMany(p => p.AllocateSubjects)
                     .HasForeignKey(d => d.SubjectId)
-                    .HasConstraintName("FK__AllocateS__Subje__52593CB8");
+                    .HasConstraintName("FK__AllocateS__Subje__1B29035F");
 
                 entity.HasOne(d => d.Teacher)
                     .WithMany(p => p.AllocateSubjects)
                     .HasForeignKey(d => d.TeacherId)
-                    .HasConstraintName("FK__AllocateS__Teach__534D60F1");
+                    .HasConstraintName("FK__AllocateS__Teach__1C1D2798");
+            });
+
+            modelBuilder.Entity<AllocateClassroom>(entity =>
+            {
+                entity.Property(e => e.AllocateClassroomID).HasColumnName("AllocateClassroomID");
+
+                entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+                entity.Property(e => e.ClassroomID).HasColumnName("ClassroomID");
+
+                entity.Property(e => e.TeacherId).HasColumnName("TeacherID");
+
+                entity.HasOne(d => d.Classroom)
+                    .WithMany(p => p.AllocateClassrooms)
+                    .HasForeignKey(d => d.ClassroomID)
+                    .HasConstraintName("FK__AllocateC__Class__1B29035F");
+
+                entity.HasOne(d => d.Teacher)
+                    .WithMany(p => p.AllocateClassrooms)
+                    .HasForeignKey(d => d.TeacherId)
+                    .HasConstraintName("FK__AllocateC__Teach__1C1D2798");
             });
 
             modelBuilder.Entity<Classroom>(entity =>
@@ -99,7 +121,7 @@ namespace SchoolManagementBackend.Entities
                 entity.HasOne(d => d.Classroom)
                     .WithMany(p => p.Students)
                     .HasForeignKey(d => d.ClassroomId)
-                    .HasConstraintName("FK__Student__Classro__4BAC3F29");
+                    .HasConstraintName("FK__Student__Classro__147C05D0");
             });
 
             modelBuilder.Entity<Subject>(entity =>

@@ -18,5 +18,7 @@ namespace SchoolManagementBackend.Entities
         public DateTime DateCreated { get; set; }
 
         public virtual ICollection<AllocateSubject> AllocateSubjects { get; set; }
+
+        public virtual ICollection<AllocateClassroom> AllocateClassrooms { get; set; }
     }
 }

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
+import moment from "moment";
 
 function SubjectPage() {
   const {
@@ -14,10 +15,29 @@ function SubjectPage() {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data) => {
-    axios.post(`${API_URL}/Subject/AddSubject`, data).then((res) => {
-      console.log("Response", res);
-    });
+  const onSubmit = async (data) => {
+    try {
+      const subject = {
+        subjectName: data.SubjectName,
+        dateCreated: moment().format("DD-MM-YYYY hh:mm:ss"),
+      };
+      await axios.post(`${API_URL}/Subject/AddSubject`, data).then((res) => {
+        setMessage(`${data.SubjectName} is added successfully.`);
+      });
+    } catch (error) {
+      if (error.response.data.statusCode) {
+        setMessage(error.response.data.data);
+        var today = new Date(),
+          date =
+            today.getFullYear() +
+            "-" +
+            (today.getMonth() + 1) +
+            "-" +
+            today.getDate();
+
+        console.log(date);
+      }
+    }
   };
 
   return (
@@ -62,6 +82,7 @@ function SubjectPage() {
                 </div>
 
                 {errors.SubjectName && <p>{errors.SubjectName.message}</p>}
+                {message && <p>{message}</p>}
               </div>
             </form>
             <br />
