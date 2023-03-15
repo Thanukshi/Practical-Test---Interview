@@ -16,20 +16,18 @@ namespace SchoolManagementBackend.Entities
         {
         }
 
-        public virtual DbSet<AllocateClassroom> AllocateClassrooms { get; set; } = null!;
-        public virtual DbSet<AllocateSubject> AllocateSubjects { get; set; } = null!;
-        public virtual DbSet<Classroom> Classrooms { get; set; } = null!;
-        public virtual DbSet<Student> Students { get; set; } = null!;
-        public virtual DbSet<Subject> Subjects { get; set; } = null!;
-        public virtual DbSet<Teacher> Teachers { get; set; } = null!;
+        public virtual DbSet<AllocateClassroom> AllocateClassrooms { get; set; } 
+        public virtual DbSet<AllocateSubject> AllocateSubjects { get; set; }
+        public virtual DbSet<Classroom> Classrooms { get; set; } 
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<Teacher> Teachers { get; set; } 
+
+        public DbSet<AllocateSubjectList> GetAllAllocateSubjectList { get; set; }
+        public DbSet<AllocateClassroomList> GetAllAllocateClassroomList { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-Q6KSKV4\\SQLEXPRESS;Database=SchoolManagementDB;Trusted_Connection=True;");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -154,6 +152,56 @@ namespace SchoolManagementBackend.Entities
 
                 entity.Property(e => e.LastName)
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<AllocateSubjectList>(entity =>
+            {
+                entity.HasKey(e => e.AllocateSubjectId)
+                 .HasName("AllocateSubjectID");
+
+                entity.Property(e => e.SubjectID).HasColumnName("SubjectID");
+
+                entity.Property(e => e.SubjectName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TeacherID).HasColumnName("TeacherID");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<AllocateClassroomList>(entity =>
+            {
+                entity.HasKey(e => e.AllocateClassroomID)
+                 .HasName("AllocateClassroomID");
+
+                entity.Property(e => e.ClassroomID).HasColumnName("ClassroomID");
+
+                entity.Property(e => e.ClassroomName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TeacherID).HasColumnName("TeacherID");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(10)
                     .IsUnicode(false);
             });
 
