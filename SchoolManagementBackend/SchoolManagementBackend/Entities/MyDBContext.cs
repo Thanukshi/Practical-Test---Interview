@@ -25,6 +25,7 @@ namespace SchoolManagementBackend.Entities
 
         public DbSet<AllocateSubjectList> GetAllAllocateSubjectList { get; set; }
         public DbSet<AllocateClassroomList> GetAllAllocateClassroomList { get; set; }
+        public DbSet<StudentList> GetAllStudentList { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -202,6 +203,51 @@ namespace SchoolManagementBackend.Entities
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(10)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<StudentList>(entity =>
+            {
+                entity.HasKey(e => e.StudentID)
+                 .HasName("StudentID");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ContactPersonName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ContactNo)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DBO)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Age).HasColumnName("Age");
+
+                entity.Property(e => e.ClassroomID).HasColumnName("ClassroomId");
+
+                entity.Property(e => e.ClassroomName)
+                    .IsRequired()
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 

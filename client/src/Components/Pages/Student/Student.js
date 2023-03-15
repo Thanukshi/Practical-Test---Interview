@@ -20,7 +20,6 @@ function StudentPage() {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [students, GetStudents] = useState("");
-  const [student, SetStudent] = useState("");
   const [age, setAge] = useState(null);
   const [classrooms, GetClassrooms] = useState("");
 
@@ -28,16 +27,19 @@ function StudentPage() {
     try {
       await axios.post(`${API_URL}/Student/AddStudent`, data).then((res) => {
         console.log("data", data);
-        toast.success(`${data.SubjectName} is added successfully.`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          `${data.firstName} ${data.lastName} is added successfully.`,
+          {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         window.location.reload();
       });
     } catch (error) {
@@ -359,7 +361,7 @@ function StudentPage() {
 
             <div className="row align-items-center mt-5 mb-4">
               <div className="col-6" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2"> Teachers List</h4>
+                <h4 className="font-weight-bold mb-2"> Student List</h4>
               </div>
               <div className="col-6" style={{ width: "100%" }}>
                 <form className="form-inline my-2 my-lg-0">
@@ -381,7 +383,7 @@ function StudentPage() {
 
             {loading ? (
               <div>Loading...</div>
-            ) : student && student.length > 0 ? (
+            ) : students && students.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">
                   <table class="table">
@@ -389,21 +391,29 @@ function StudentPage() {
                       <tr>
                         <th scope="col">No</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Contact Person</th>
                         <th scope="col">Contact Number</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Classroom</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col">Age</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {student.map((s, index) => (
-                        <tr key={s.teacherId}>
+                      {students.map((item, index) => (
+                        <tr key={item.studentId}>
                           <th scope="row">{index + 1}</th>
                           <td>
-                            {s.firstName} {s.lastName}
+                            {item.firstName} {item.lastName}
                           </td>
-                          <td>{s.contactNo}</td>
-                          <td>{s.email} </td>
+                          <td>{item.contactPersonName}</td>
+                          <td>{item.contactNo}</td>
+                          <td>{item.email} </td>
+                          <td>{item.classroomName} </td>
+                          <td>{item.dbo} </td>
+                          <td>{item.age} </td>
                           <td>
                             <p>
                               <img src={EditButton} />
@@ -414,10 +424,10 @@ function StudentPage() {
                               onClick={(e) => {
                                 if (
                                   window.confirm(
-                                    "Are you sure you want to delete this teacher?"
+                                    `Are you sure you want to delete this ${item.firstName} ${item.lastName} student?`
                                   )
                                 ) {
-                                  onDelete(e, s.teacherId);
+                                  onDelete(e, item.studentId);
                                 }
                               }}
                             >
@@ -432,7 +442,7 @@ function StudentPage() {
               </div>
             ) : (
               <div>
-                Teachers List is not found at this moment. Please try again
+                Student List is not found at this moment. Please try again
                 later.
                 <br />
                 <br />

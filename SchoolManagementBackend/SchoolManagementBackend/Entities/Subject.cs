@@ -11,7 +11,7 @@ namespace SchoolManagementBackend.Entities
         }
 
         public int SubjectId { get; set; }
-        public string SubjectName { get; set; } = null!;
+        public string SubjectName { get; set; }
 
         public virtual ICollection<AllocateSubject> AllocateSubjects { get; set; }
     }

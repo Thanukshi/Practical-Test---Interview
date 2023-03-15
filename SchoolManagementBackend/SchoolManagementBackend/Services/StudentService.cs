@@ -46,7 +46,8 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                var StudentDetails = _dbContext.Students.ToList();
+                var StudentDetails = _dbContext.GetAllStudentList.FromSqlRaw("Exec GetAllStudentList").ToList();
+
                 if (StudentDetails is null)
                 {
                     return Task.FromResult(new BaseResponseService().GetErrorResponse("Student List not found"));
