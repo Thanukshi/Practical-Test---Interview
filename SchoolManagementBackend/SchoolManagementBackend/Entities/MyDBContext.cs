@@ -16,19 +16,45 @@ namespace SchoolManagementBackend.Entities
         {
         }
 
-        public virtual DbSet<AllocateSubject> AllocateSubjects { get; set; }
-        public virtual DbSet<AllocateClassroom> AllocateClassrooms { get; set; }
-        public virtual DbSet<Classroom> Classrooms { get; set; }
-        public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<Subject> Subjects { get; set; }
-        public virtual DbSet<Teacher> Teachers { get; set; }
+        public virtual DbSet<AllocateClassroom> AllocateClassrooms { get; set; } = null!;
+        public virtual DbSet<AllocateSubject> AllocateSubjects { get; set; } = null!;
+        public virtual DbSet<Classroom> Classrooms { get; set; } = null!;
+        public virtual DbSet<Student> Students { get; set; } = null!;
+        public virtual DbSet<Subject> Subjects { get; set; } = null!;
+        public virtual DbSet<Teacher> Teachers { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-Q6KSKV4\\SQLEXPRESS;Database=SchoolManagementDB;Trusted_Connection=True;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AllocateClassroom>(entity =>
+            {
+                entity.ToTable("AllocateClassroom");
+
+                entity.Property(e => e.AllocateClassroomId).HasColumnName("AllocateClassroomID");
+
+                entity.Property(e => e.ClassroomId).HasColumnName("ClassroomID");
+
+                entity.Property(e => e.TeacherId).HasColumnName("TeacherID");
+
+                entity.HasOne(d => d.Classroom)
+                    .WithMany(p => p.AllocateClassrooms)
+                    .HasForeignKey(d => d.ClassroomId)
+                    .HasConstraintName("FK_AllocateClassroom");
+
+                entity.HasOne(d => d.Teacher)
+                    .WithMany(p => p.AllocateClassrooms)
+                    .HasForeignKey(d => d.TeacherId)
+                    .HasConstraintName("FK_TeachertAllocateClassroom");
+            });
+
             modelBuilder.Entity<AllocateSubject>(entity =>
             {
                 entity.Property(e => e.AllocateSubjectId).HasColumnName("AllocateSubjectID");
@@ -40,31 +66,12 @@ namespace SchoolManagementBackend.Entities
                 entity.HasOne(d => d.Subject)
                     .WithMany(p => p.AllocateSubjects)
                     .HasForeignKey(d => d.SubjectId)
-                    .HasConstraintName("FK__AllocateS__Subje__1B29035F");
+                    .HasConstraintName("FK_SubjectAllocate");
 
                 entity.HasOne(d => d.Teacher)
                     .WithMany(p => p.AllocateSubjects)
                     .HasForeignKey(d => d.TeacherId)
-                    .HasConstraintName("FK__AllocateS__Teach__1C1D2798");
-            });
-
-            modelBuilder.Entity<AllocateClassroom>(entity =>
-            {
-                entity.Property(e => e.AllocateClassroomID).HasColumnName("AllocateClassroomID");
-
-                entity.Property(e => e.ClassroomID).HasColumnName("ClassroomID");
-
-                entity.Property(e => e.TeacherId).HasColumnName("TeacherID");
-
-                entity.HasOne(d => d.Classroom)
-                    .WithMany(p => p.AllocateClassrooms)
-                    .HasForeignKey(d => d.ClassroomID)
-                    .HasConstraintName("FK__AllocateC__Class__1B29035F");
-
-                entity.HasOne(d => d.Teacher)
-                    .WithMany(p => p.AllocateClassrooms)
-                    .HasForeignKey(d => d.TeacherId)
-                    .HasConstraintName("FK__AllocateC__Teach__1C1D2798");
+                    .HasConstraintName("FK_TeacherAllocateSubject");
             });
 
             modelBuilder.Entity<Classroom>(entity =>
@@ -76,7 +83,6 @@ namespace SchoolManagementBackend.Entities
                 entity.Property(e => e.ClassroomName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
             });
 
             modelBuilder.Entity<Student>(entity =>
@@ -96,7 +102,8 @@ namespace SchoolManagementBackend.Entities
                     .IsUnicode(false);
 
                 entity.Property(e => e.Dbo)
-                    .HasColumnType("date")
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
                     .HasColumnName("DBO");
 
                 entity.Property(e => e.Email)
@@ -114,7 +121,8 @@ namespace SchoolManagementBackend.Entities
                 entity.HasOne(d => d.Classroom)
                     .WithMany(p => p.Students)
                     .HasForeignKey(d => d.ClassroomId)
-                    .HasConstraintName("FK__Student__Classro__147C05D0");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_StudentClassroom");
             });
 
             modelBuilder.Entity<Subject>(entity =>

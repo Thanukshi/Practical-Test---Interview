@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 
-function SubjectPage() {
+function ClassroomPage() {
   const {
     handleSubmit,
     register,
@@ -16,17 +16,16 @@ function SubjectPage() {
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [subjects, GetSubjects] = useState("");
-
+  const [classroom, GetClassroom] = useState("");
 
   useEffect(() => {
-    getAllSubjects();
+    getAllClassrooms();
   }, []);
 
   const onSubmit = async (data) => {
     try {
-      await axios.post(`${API_URL}/Subject/AddSubject`, data).then((res) => {
-        toast.success(`${data.SubjectName} is added successfully.`, {
+      await axios.post(`${API_URL}/Classroom/AddClass`, data).then((res) => {
+        toast.success(`${data.ClassroomName} is added successfully.`, {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -45,11 +44,11 @@ function SubjectPage() {
     }
   };
 
-  const getAllSubjects = async () => {
+  const getAllClassrooms = async () => {
     try {
-      await axios.get(`${API_URL}/Subject/GetSubjectList`).then((res) => {
+      await axios.get(`${API_URL}/Classroom/GetClasses`).then((res) => {
         console.log("first", res.data.data);
-        GetSubjects(res.data.data);
+        GetClassroom(res.data.data);
         setLoading(false);
       });
     } catch (error) {
@@ -60,7 +59,7 @@ function SubjectPage() {
   const onDelete = async (e, id) => {
     try {
       await axios
-        .delete(`${API_URL}/Subject/RemoveSubject/${id}`)
+        .delete(`${API_URL}/Classroom/RemoveClassroom/${id}`)
         .then((res) => {
           console.log("res", res);
           toast.success(res.data.data, {
@@ -76,31 +75,28 @@ function SubjectPage() {
           window.location.reload();
         });
     } catch (error) {
-      if (error.response.data.statusCode) {
-        console.log(error.response.data.data);
+      if (error.response) {
+        console.log(error.response);
       }
     }
   };
 
   const onUpdate = async (updatedata) => {
     await axios
-      .put(`${API_URL}/Subject/UpdateSubject`, updatedata)
+      .put(`${API_URL}/Classroom/UpdateClassroom`, updatedata)
       .then((res) => {
         try {
           console.log("up", res);
-          toast.success(
-            `${updatedata.UpdateSubjectName} is added successfully.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
+          toast.success(`${updatedata.Classroom} is added successfully.`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         } catch (error) {
           if (error.response.data.statusCode === 400) {
             setMessage(error.response.data.data);
@@ -115,7 +111,7 @@ function SubjectPage() {
       <div className="container p-1">
         <div className="row align-items-start">
           <div className="col">
-            <h2 className="font-weight-bold">Add Subjects</h2>
+            <h2 className="font-weight-bold">Add Classroom</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="row align-items-center mb-5">
@@ -127,12 +123,12 @@ function SubjectPage() {
                       className="form-control"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
-                      placeholder="Enter Subject Name"
-                      {...register("SubjectName", {
-                        required: "Subject name must be filled.",
+                      placeholder="Enter Classroom Name"
+                      {...register("ClassroomName", {
+                        required: "Classroom name must be filled.",
                         pattern: {
-                          value: /^[A-Za-z]+$/i,
-                          message: "Only letters are allowed",
+                          value: /^[a-zA-Z0-9]+$/,
+                          message: "Only letters and numbers are allowed",
                         },
                       })}
                     />
@@ -148,7 +144,7 @@ function SubjectPage() {
                   </button>
                 </div>
 
-                {errors.SubjectName && <p>{errors.SubjectName.message}</p>}
+                {errors.ClassroomName && <p>{errors.ClassroomName.message}</p>}
                 {message && <p>{message}</p>}
               </div>
             </form>
@@ -157,7 +153,7 @@ function SubjectPage() {
 
             <div className="row align-items-center mb-3">
               <div className="col-6" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2"> Subjects List</h4>
+                <h4 className="font-weight-bold mb-2"> Classroom List</h4>
               </div>
               <div className="col-6" style={{ width: "100%" }}>
                 <form className="form-inline my-2 my-lg-0">
@@ -179,23 +175,23 @@ function SubjectPage() {
 
             {loading ? (
               <div>Loading...</div>
-            ) : subjects && subjects.length > 0 ? (
+            ) : classroom && classroom.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">
-                  <table class="table">
-                    <thead class="thead-dark">
+                  <table className="table">
+                    <thead className="thead-dark">
                       <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Subject Name</th>
+                        <th scope="col">Classroom Name</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {subjects.map((sub, index) => (
-                        <tr key={sub.subjectId}>
+                      {classroom.map((classroom, index) => (
+                        <tr key={classroom.classroomId}>
                           <th scope="row">{index + 1}</th>
-                          <td>{sub.subjectName}</td>
+                          <td>{classroom.classroomName}</td>
                           <td>
                             <p>
                               <img src={EditButton} />
@@ -209,7 +205,7 @@ function SubjectPage() {
                                     "Are you sure you want to delete this subject?"
                                   )
                                 ) {
-                                  onDelete(e, sub.subjectId);
+                                  onDelete(e, classroom.classroomId);
                                 }
                               }}
                             >
@@ -224,7 +220,7 @@ function SubjectPage() {
               </div>
             ) : (
               <div>
-                Subject List is not found at this moment. Please try again
+                Classroom List is not found at this moment. Please try again
                 later.
               </div>
             )}
@@ -235,4 +231,4 @@ function SubjectPage() {
   );
 }
 
-export default SubjectPage;
+export default ClassroomPage;

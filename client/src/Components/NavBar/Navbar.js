@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -5,8 +6,17 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Logo from "../../assets/images/logo.png";
 
 function NavbarPage() {
+  const [active, setActive] = useState("default");
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      bg="dark"
+      variant="dark"
+      className="sub-nav"
+      activeKey={active}
+      onSelect={(selectedKey) => setActive(selectedKey)}
+    >
       <Container>
         <Navbar.Brand href="#home">
           <img
@@ -20,28 +30,28 @@ function NavbarPage() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/subject">Subjects</Nav.Link>
-            <Nav.Link href="#features">Classrooms</Nav.Link>
-            <NavDropdown title="Teacher" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">
-                Add Teacher
-              </NavDropdown.Item>
+            <Nav.Link href="/subject" eventKey="default">
+              Subjects
+            </Nav.Link>
+            <Nav.Link href="/classroom" eventKey="Classrooms">Classrooms</Nav.Link>
+            <Nav.Link href="/Teacher" eventKey="Teacher">Teacher</Nav.Link>
+            <Nav.Link href="/Student" eventKey="Student">Student</Nav.Link>
+            {/* <NavDropdown title="Teacher" id="collasible-nav-dropdown">
+              <NavDropdown.Item href="/Teacher">Add Teacher</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Teacher List
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
 
-            <NavDropdown title="Student" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">
-                Add Student
-              </NavDropdown.Item>
+            {/* <NavDropdown title="Student" id="collasible-nav-dropdown">
+              <NavDropdown.Item href="/Student">Add Student</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Student List
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
 
-            <Nav.Link href="#pricing">Allocate Classroom</Nav.Link>
-            <Nav.Link href="#pricing">Allocate Subjects</Nav.Link>
+            <Nav.Link href="/AllocateClassroom" eventKey="AllocateClassroom">Allocate Classroom</Nav.Link>
+            <Nav.Link href="/AllocateSubject">Allocate Subjects</Nav.Link>
             <Nav.Link href="#pricing">Student Report</Nav.Link>
           </Nav>
         </Navbar.Collapse>

@@ -124,7 +124,7 @@ namespace SchoolManagementBackend.Controllers
         }
 
 
-        [HttpDelete("RemoveClassroom/{id}")]
+        [HttpDelete("RemoveSubject/{id}")]
         public async Task<ActionResult> RemoveSubject(int id)
         {
             try

@@ -12,7 +12,6 @@ function LoginPage() {
   } = useForm({ mode: "onChange" });
 
   const [message, setMessage] = useState();
-  //let [error, setError] = useState(Error());
 
   const onSubmit = (data) => {
     if (

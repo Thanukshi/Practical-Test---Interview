@@ -3,15 +3,15 @@ using SchoolManagementBackend.Models;
 
 namespace SchoolManagementBackend.Interfaces
 {
-    public interface IAllocateSubjectService
+    public interface IAllocateClassroomService
     {
-        Task<BaseResponse> AddAllocateSubject(AllocateSubject allocateSubject);
+        Task<BaseResponse> AddAllocateClassroom(AllocateClassroom allocateClassroom);
 
-        Task<BaseResponse> GetAllAllocateSubjectDetails();
+        Task<BaseResponse> GetAllAllocateClassroomDetails();
 
         //Task<BaseResponse> GetAllocateSubjectByID(int id);
 
-        Task<BaseResponse> RemoveAllAlocateSubject(int id);
+        Task<BaseResponse> RemoveAllAlocateClassroom(int id);
 
         //    Task<BaseResponse> UpdateAllocateSubject(AllocateSubject allocateSubject);
         //}

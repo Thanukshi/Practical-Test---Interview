@@ -11,21 +11,21 @@ namespace SchoolManagementBackend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AllocateSubjectController : ControllerBase
+    public class AllocateClassroomController : ControllerBase
     {
-        private readonly IAllocateSubjectService _allocateSubjectService;
-        public AllocateSubjectController(IAllocateSubjectService allocateSubjectService)
+        private readonly IAllocateClassroomService _allocateClassroomService;
+        public AllocateClassroomController(IAllocateClassroomService allocateClassroomService)
         {
-            _allocateSubjectService = allocateSubjectService;
+            _allocateClassroomService = allocateClassroomService;
 
         }
 
-        [HttpPost("AddAllocateSubject")]
-        public async Task<ActionResult> AddAllocateSubject(AllocateSubject allocateSubject)
+        [HttpPost("AddAllocateClassroom")]
+        public async Task<ActionResult> AddAllocateClassroom(AllocateClassroom allocateClassroom)
         {
             try
             {
-                var result = await _allocateSubjectService.AddAllocateSubject(allocateSubject);
+                var result = await _allocateClassroomService.AddAllocateClassroom(allocateClassroom);
                 if (result.Success)
                     return Ok(result);
                 else
@@ -54,12 +54,12 @@ namespace SchoolManagementBackend.Controllers
             }
         }
 
-        [HttpGet("GetAllocateSubject")]
-        public async Task<ActionResult> GetAllocateSubject()
+        [HttpGet("GetAllAllocateClassroomDetails")]
+        public async Task<ActionResult> GetAllAllocateClassroomDetails()
         {
             try
             {
-                var result = await _allocateSubjectService.GetAllAllocateSubjectDetails();
+                var result = await _allocateClassroomService.GetAllAllocateClassroomDetails();
                 if (result.Success)
                     return Ok(result);
                 else
@@ -124,12 +124,12 @@ namespace SchoolManagementBackend.Controllers
         //}
 
 
-        [HttpDelete("RemoveAllAlocateSubject/{id}")]
-        public async Task<ActionResult> RemoveAllAlocateSubject(int id)
+        [HttpDelete("RemoveAllAlocateClassroom/{id}")]
+        public async Task<ActionResult> RemoveAllAlocateClassroom(int id)
         {
             try
             {
-                var result = await _allocateSubjectService.RemoveAllAlocateSubject(id);
+                var result = await _allocateClassroomService.RemoveAllAlocateClassroom(id);
                 if (result.Success)
                     return Ok(result);
                 else

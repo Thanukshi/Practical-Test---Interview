@@ -18,6 +18,7 @@ builder.Services.AddTransient<ISubjectService, SubjectService>();
 builder.Services.AddTransient<ITeacherService, TeacherService>();
 builder.Services.AddTransient<IStudentsService, StudentsService>();
 builder.Services.AddTransient<IAllocateSubjectService, AllocateSubjectService>();
+builder.Services.AddTransient<IAllocateClassroomService, AllocateClassroomService>();
 
 //Add db context
 builder.Services.AddDbContext<MyDBContext>(options =>

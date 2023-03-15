@@ -7,15 +7,14 @@ namespace SchoolManagementBackend.Entities
     {
         public Classroom()
         {
-            Students = new HashSet<Student>();
             AllocateClassrooms = new HashSet<AllocateClassroom>();
+            Students = new HashSet<Student>();
         }
 
         public int ClassroomId { get; set; }
-        public string ClassroomName { get; set; }
-
-        public virtual ICollection<Student> Students { get; set; }
+        public string ClassroomName { get; set; } = null!;
 
         public virtual ICollection<AllocateClassroom> AllocateClassrooms { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
     }
 }

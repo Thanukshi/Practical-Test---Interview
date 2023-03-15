@@ -11,29 +11,29 @@ using SchoolManagementBackend.ResponseHandler;
 
 namespace SchoolManagementBackend.Services
 {
-    public class AllocateSubjectService : IAllocateSubjectService
+    public class AllocateClassroomService : IAllocateClassroomService
     {
         private readonly MyDBContext _dbContext;
-        public AllocateSubjectService(MyDBContext dBContext)
+        public AllocateClassroomService(MyDBContext dBContext)
         {
             _dbContext = dBContext;
         }
 
-        public async Task<BaseResponse> AddAllocateSubject(AllocateSubject allocateSubject)
+        public async Task<BaseResponse> AddAllocateClassroom(AllocateClassroom allocateClassroom)
         {
             try
             {
-                var ASDetails = _dbContext.AllocateSubjects.Where(x => x.TeacherId == allocateSubject.TeacherId && x.SubjectId == allocateSubject.SubjectId).FirstOrDefault();
+                var ASDetails = _dbContext.AllocateClassrooms.Where(x => x.TeacherId == allocateClassroom.TeacherId && x.ClassroomId == allocateClassroom.ClassroomId).FirstOrDefault();
                 if (ASDetails != null)
                 {
-                    return new BaseResponseService().GetErrorResponse("This subject is already allocated to this teacher.");
+                    return new BaseResponseService().GetErrorResponse("This classroom is already allocated to this teacher.");
                 }
                 else
                 {
-                    _dbContext.AllocateSubjects.Add(allocateSubject);
+                    _dbContext.AllocateClassrooms.Add(allocateClassroom);
                     await _dbContext.SaveChangesAsync();
 
-                    return new BaseResponseService().GetSuccessResponse(allocateSubject, 201);
+                    return new BaseResponseService().GetSuccessResponse(allocateClassroom, 201);
                 }
 
             }
@@ -43,14 +43,14 @@ namespace SchoolManagementBackend.Services
             }
         }
 
-        public Task<BaseResponse> GetAllAllocateSubjectDetails()
+        public Task<BaseResponse> GetAllAllocateClassroomDetails()
         {
             try
             {
-                var ASDetails = _dbContext.GetAllAllocateSubjectList.FromSqlRaw("Exec GetAllAllocateSubjectList").ToList();
-                if (ASDetails == null)
+                var ASDetails = _dbContext.GetAllAllocateClassroomList.FromSqlRaw("Exec GetAllAllocateClassroomList").ToList();
+                if (ASDetails is null)
                 {
-                    return Task.FromResult(new BaseResponseService().GetErrorResponse("Allocate Subject List Not Found"));
+                    return Task.FromResult(new BaseResponseService().GetErrorResponse("Allocate Classroom List Not Found"));
                 }
                 else
                 {
@@ -87,19 +87,19 @@ namespace SchoolManagementBackend.Services
         //}
 
 
-        public async Task<BaseResponse> RemoveAllAlocateSubject(int id)
+        public async Task<BaseResponse> RemoveAllAlocateClassroom(int id)
         {
             try
             {
-                AllocateSubject allocateSubject = (AllocateSubject)_dbContext.AllocateSubjects.Where(x => x.AllocateSubjectId == id).First();
+                AllocateClassroom allocateClassroom = (AllocateClassroom)_dbContext.AllocateClassrooms.Where(x => x.AllocateClassroomId == id).First();
 
-                if (allocateSubject is null)
+                if (allocateClassroom is null)
                 {
                     return new BaseResponseService().GetErrorResponse($"This {id} does not exist.");
                 }
                 else
                 {
-                    _dbContext.AllocateSubjects.Remove(allocateSubject);
+                    _dbContext.AllocateClassrooms.Remove(allocateClassroom);
                     await _dbContext.SaveChangesAsync();
 
                     var classess = _dbContext.Classrooms.ToList();
