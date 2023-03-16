@@ -13,7 +13,7 @@ namespace SchoolManagementBackend.Interfaces
 
         Task<BaseResponse> RemoveAllAlocateClassroom(int id);
 
-        //    Task<BaseResponse> UpdateAllocateSubject(AllocateSubject allocateSubject);
+        Task<BaseResponse> UpdateAllocateClassroom(AllocateClassroom allocateClassroom);
         //}
     }
 }

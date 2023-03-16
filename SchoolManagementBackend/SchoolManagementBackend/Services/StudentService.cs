@@ -69,14 +69,18 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                var StudentDetails = _dbContext.Students.Where(x => x.StudentId == id).FirstOrDefault();
-                if (StudentDetails is null)
+                var StudentDetails = _dbContext.GetAllStudentList.FromSqlRaw("Exec GetAllStudentList").ToList();
+                var SID = id;
+                var newStudent = StudentDetails.Find(x => x.StudentID == id);
+
+                //var StudentDetails = _dbContext.Students.Where(x => x.StudentId == id).FirstOrDefault();
+                if (newStudent is null)
                 {
                     return Task.FromResult(new BaseResponseService().GetErrorResponse($"This {id} does not exist."));
                 }
                 else
                 {
-                    return Task.FromResult(new BaseResponseService().GetSuccessResponse(StudentDetails));
+                    return Task.FromResult(new BaseResponseService().GetSuccessResponse(newStudent));
                 }
 
             }

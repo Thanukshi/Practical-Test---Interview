@@ -159,39 +159,39 @@ namespace SchoolManagementBackend.Controllers
         }
 
 
-        //[HttpPut("UpdateAllocateSubject")]
-        //public async Task<ActionResult> UpdateTeacher(Teacher teacher)
-        //{
-        //    try
-        //    {
-        //        var result = await _teacherService.UpdateTeacher(teacher);
-        //        if (result.Success)
-        //            return Ok(result);
-        //        else
-        //        {
-        //            int error = result.StatusCode;
-        //            switch (error)
-        //            {
-        //                case ((int)HttpStatusCode.NotFound):
-        //                    return StatusCode((int)HttpStatusCode.NotFound, result);
-        //                case ((int)HttpStatusCode.Unauthorized):
-        //                    return StatusCode((int)HttpStatusCode.Unauthorized, result);
-        //                case (int)HttpStatusCode.BadRequest:
-        //                    return StatusCode((int)HttpStatusCode.BadRequest, result);
-        //                default:
-        //                    return StatusCode(StatusCodes.Status500InternalServerError, result);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new OkObjectResult(new
-        //        {
-        //            code = (int)HttpStatusCode.InternalServerError,
-        //            message = ex.Message,
-        //        });
-        //    }
-        //}
+        [HttpPut("UpdateAllocateClassroom")]
+        public async Task<ActionResult> UpdateAllocateClassroom(AllocateClassroom allocateClassroom)
+        {
+            try
+            {
+                var result = await _allocateClassroomService.UpdateAllocateClassroom(allocateClassroom);
+                if (result.Success)
+                    return Ok(result);
+                else
+                {
+                    int error = result.StatusCode;
+                    switch (error)
+                    {
+                        case ((int)HttpStatusCode.NotFound):
+                            return StatusCode((int)HttpStatusCode.NotFound, result);
+                        case ((int)HttpStatusCode.Unauthorized):
+                            return StatusCode((int)HttpStatusCode.Unauthorized, result);
+                        case (int)HttpStatusCode.BadRequest:
+                            return StatusCode((int)HttpStatusCode.BadRequest, result);
+                        default:
+                            return StatusCode(StatusCodes.Status500InternalServerError, result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OkObjectResult(new
+                {
+                    code = (int)HttpStatusCode.InternalServerError,
+                    message = ex.Message,
+                });
+            }
+        }
     }
 }
 

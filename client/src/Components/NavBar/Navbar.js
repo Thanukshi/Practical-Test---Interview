@@ -8,15 +8,7 @@ import Logo from "../../assets/images/logo.png";
 function NavbarPage() {
   const [active, setActive] = useState("default");
   return (
-    <Navbar
-      collapseOnSelect
-      expand="lg"
-      bg="dark"
-      variant="dark"
-      className="sub-nav"
-      activeKey={active}
-      onSelect={(selectedKey) => setActive(selectedKey)}
-    >
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
         <Navbar.Brand href="#home">
           <img
@@ -30,12 +22,12 @@ function NavbarPage() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/subject" eventKey="default">
-              Subjects
-            </Nav.Link>
-            <Nav.Link href="/classroom" eventKey="Classrooms">Classrooms</Nav.Link>
-            <Nav.Link href="/Teacher" eventKey="Teacher">Teacher</Nav.Link>
-            <Nav.Link href="/Student" eventKey="Student">Student</Nav.Link>
+            <Nav.Link href="/subject">Subjects</Nav.Link>
+            <Nav.Link href="/classroom">Classrooms</Nav.Link>
+            <Nav.Link href="/Teacher">Teacher</Nav.Link>
+            {/* <Nav.Link href="/Student" eventKey="Student">
+              Student
+            </Nav.Link> */}
             {/* <NavDropdown title="Teacher" id="collasible-nav-dropdown">
               <NavDropdown.Item href="/Teacher">Add Teacher</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
@@ -43,14 +35,14 @@ function NavbarPage() {
               </NavDropdown.Item>
             </NavDropdown> */}
 
-            {/* <NavDropdown title="Student" id="collasible-nav-dropdown">
+            <NavDropdown title="Student" id="collasible-nav-dropdown">
               <NavDropdown.Item href="/Student">Add Student</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
+              <NavDropdown.Item href="/Student/List">
                 Student List
               </NavDropdown.Item>
-            </NavDropdown> */}
+            </NavDropdown>
 
-            <Nav.Link href="/AllocateClassroom" eventKey="AllocateClassroom">Allocate Classroom</Nav.Link>
+            <Nav.Link href="/AllocateClassroom">Allocate Classroom</Nav.Link>
             <Nav.Link href="/AllocateSubject">Allocate Subjects</Nav.Link>
             <Nav.Link href="#pricing">Student Report</Nav.Link>
           </Nav>

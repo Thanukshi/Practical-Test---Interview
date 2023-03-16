@@ -114,29 +114,29 @@ namespace SchoolManagementBackend.Services
 
         }
 
-        //public async Task<BaseResponse> UpdateClassroom(Classroom classroom)
-        //{
-        //    try
-        //    {
-        //        var className = _dbContext.Classrooms.AsNoTracking().Where(x => x.ClassroomName == classroom.ClassroomName).FirstOrDefault();
-        //        if(className is null)
-        //        {
-        //            _dbContext.Classrooms.Update(classroom);
-        //            await _dbContext.SaveChangesAsync();
+        public async Task<BaseResponse> UpdateAllocateClassroom(AllocateClassroom allocateClassroom)
+        {
+            try
+            {
+                var className = _dbContext.AllocateClassrooms.AsNoTracking().Where(x => x.ClassroomId == allocateClassroom.ClassroomId).FirstOrDefault();
+                if (className is null)
+                {
+                    _dbContext.AllocateClassrooms.Update(allocateClassroom);
+                    await _dbContext.SaveChangesAsync();
 
-        //            return new BaseResponseService().GetSuccessResponse(classroom);
-        //        }
-        //        else
-        //        {
-        //            return new BaseResponseService().GetSuccessResponse($"This {classroom.ClassroomName} is already used.");
-        //        }
+                    return new BaseResponseService().GetSuccessResponse(allocateClassroom);
+                }
+                else
+                {
+                    return new BaseResponseService().GetSuccessResponse($"This allocation is already used.");
+                }
 
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new BaseResponseService().GetErrorResponse(ex);
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponseService().GetErrorResponse(ex);
+            }
+        }
     }
 }

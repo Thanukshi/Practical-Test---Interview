@@ -9,6 +9,8 @@ import TeacherPage from "./Components/Pages/Teacher/Teacher";
 import StudentPage from "./Components/Pages/Student/Student";
 import AllocateSubject from "./Components/Pages/AllocateSubjects/AllocateSubject";
 import AllocateClassroom from "./Components/Pages/AllocateClassroom/AllocateClassroom";
+import StudentList from "./Components/Pages/Student/StudentList";
+import StudentEditPage from "./Components/Pages/Student/StudentEditPage";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/Student" element={<StudentPage />} />
           <Route path="/AllocateSubject" element={<AllocateSubject />} />
           <Route path="/AllocateClassroom" element={<AllocateClassroom />} />
+          <Route path="/Student/List" element={<StudentList />} />
+          <Route path="/Student/Edit/:id" element={<StudentEditPage />} />
         </Routes>
       </BrowserRouter>
     </div>
