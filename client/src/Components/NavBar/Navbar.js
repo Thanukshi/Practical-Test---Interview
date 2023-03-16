@@ -44,6 +44,7 @@ function NavbarPage() {
 
             <Nav.Link href="/AllocateClassroom">Allocate Classroom</Nav.Link>
             <Nav.Link href="/AllocateSubject">Allocate Subjects</Nav.Link>
+            <Nav.Link href="/">Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
