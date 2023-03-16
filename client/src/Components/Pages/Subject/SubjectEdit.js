@@ -32,10 +32,6 @@ function SubjectEditPage() {
     }
   };
 
-  useEffect(() => {
-    getAllSubjectByID();
-  }, []);
-
   const onSubmit = async (data) => {
     try {
       const upData = {
@@ -63,6 +59,10 @@ function SubjectEditPage() {
       }
     }
   };
+
+  useEffect(() => {
+    getAllSubjectByID();
+  }, []);
 
   return (
     <div>

@@ -6,6 +6,7 @@ import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
+import { Link } from "react-router-dom";
 
 function AllocateSubject() {
   const {
@@ -244,9 +245,12 @@ function AllocateSubject() {
                           </td>
                           <td>{item.subjectName}</td>
                           <td>
-                            <p>
+                            <Link
+                              to={`/AllocateSubject/Edit/${item.allocateSubjectId}`}
+                            >
                               <img src={EditButton} />
-                            </p>
+                            </Link>
+                            <p></p>
                           </td>
                           <td>
                             <p

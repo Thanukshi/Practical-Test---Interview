@@ -109,8 +109,8 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                var SubDetails = _dbContext.Subjects.AsNoTracking().Where(x => x.SubjectId == subject.SubjectId).FirstOrDefault();
-                if (SubDetails == subject)
+                var SubDetails = _dbContext.Subjects.Where(x => x.SubjectName == subject.SubjectName).FirstOrDefault();
+                if (SubDetails != null)
                 {
                     return new BaseResponseService().GetSuccessResponse($"This Subject is already used.");
 

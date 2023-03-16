@@ -19,10 +19,10 @@ function TeacherEditPage() {
   const [teachers, GetTeachers] = useState("");
 
   useEffect(() => {
-    getTeacherBuID();
+    getTeacherByID();
   }, []);
 
-  const getTeacherBuID = async () => {
+  const getTeacherByID = async () => {
     try {
       await axios
         .get(`${API_URL}/Teacher/GetTeacherById/${params.id}`)

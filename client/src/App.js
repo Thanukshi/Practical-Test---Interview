@@ -15,6 +15,7 @@ import SubjectEditPage from "./Components/Pages/Subject/SubjectEdit";
 import ClassroomEditPage from "./Components/Pages/Classroom/ClassroomEdit";
 import TeacherEditPage from "./Components/Pages/Teacher/TeacherEdit";
 import AllocateSubjectEdit from "./Components/Pages/AllocateSubjects/AllocateSubjectEdit";
+import AllocateClassroomEdit from "./Components/Pages/AllocateClassroom/AllocateClassroomEdit";
 
 function App() {
   return (
@@ -24,21 +25,22 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/navbar" element={<Navbar />} />
-
           <Route path="/subject" element={<SubjectPage />} />
           <Route path="/Subject/Edit/:id" element={<SubjectEditPage />} />
-
           <Route path="/classroom" element={<ClassroomPage />} />
           <Route path="/classroom/edit/:id" element={<ClassroomEditPage />} />
-
           <Route path="/Teacher" element={<TeacherPage />} />
           <Route path="/Teacher/Edit/:id" element={<TeacherEditPage />} />
-
           <Route path="/AllocateSubject" element={<AllocateSubject />} />
-          <Route path="/AllocateSubject/:id" element={<AllocateSubjectEdit />} />
-
+          <Route
+            path="/AllocateSubject/Edit/:id"
+            element={<AllocateSubjectEdit />}
+          />
           <Route path="/AllocateClassroom" element={<AllocateClassroom />} />
-
+          <Route
+            path="/AllocateClassroom/Edit/:id"
+            element={<AllocateClassroomEdit />}
+          />
           <Route path="/Student" element={<StudentPage />} />
           <Route path="/Student/List" element={<StudentList />} />
           <Route path="/Student/Edit/:id" element={<StudentEditPage />} />

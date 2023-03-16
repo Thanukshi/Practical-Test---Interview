@@ -70,7 +70,7 @@ namespace SchoolManagementBackend.Services
             try
             {
                 var ASDetails = _dbContext.GetAllAllocateClassroomList.FromSqlRaw("Exec GetAllAllocateClassroomList").ToList();
-                var newASDetails = ASDetails.Find(x => x.ClassroomID == id);
+                var newASDetails = ASDetails.Find(x => x.AllocateClassroomID == id);
                 if (newASDetails == null)
                 {
                     return Task.FromResult(new BaseResponseService().GetErrorResponse($"This {id} does not exist."));
