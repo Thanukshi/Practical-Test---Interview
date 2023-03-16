@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { Link } from "react-router-dom";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
@@ -8,7 +8,6 @@ import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 
 function StudentList() {
-
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [students, GetStudents] = useState("");
@@ -27,6 +26,7 @@ function StudentList() {
 
   const onDelete = async (e, id) => {
     try {
+      console.log("id", id);
       await axios
         .delete(`${API_URL}/Student/RemoveStudent/${id}`)
         .then((res) => {
@@ -48,33 +48,6 @@ function StudentList() {
         console.log(error.response.data.data);
       }
     }
-  };
-
-  const onUpdate = async (updatedata) => {
-    await axios
-      .put(`${API_URL}/Student/UpdateStudent`, updatedata)
-      .then((res) => {
-        try {
-          console.log("up", res);
-          toast.success(
-            `${updatedata.UpdateSubjectName} is added successfully.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-        } catch (error) {
-          if (error.response.data.statusCode === 400) {
-            setMessage(error.response.data.data);
-          }
-        }
-      });
   };
 
   useEffect(() => {
@@ -142,7 +115,9 @@ function StudentList() {
                       <td>{item.age} </td>
                       <td>
                         <p>
-                          <img src={EditButton} />
+                          <Link to={`/Student/Edit/${item.studentID}`}>
+                            <img src={EditButton} />
+                          </Link>
                         </p>
                       </td>
                       <td>
@@ -153,7 +128,7 @@ function StudentList() {
                                 `Are you sure you want to delete this ${item.firstName} ${item.lastName} student?`
                               )
                             ) {
-                              onDelete(e, item.studentId);
+                              onDelete(e, item.studentID);
                             }
                           }}
                         >

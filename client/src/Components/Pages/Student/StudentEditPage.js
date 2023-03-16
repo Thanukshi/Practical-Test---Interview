@@ -1,87 +1,75 @@
 import React, { useState, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { Link, useParams } from "react-router-dom";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
-import EditButton from "../../../assets/images/edit.png";
-import DeleteButton from "../../../assets/images/delete.png";
 
 function StudentEditPage() {
   const {
     handleSubmit,
     register,
+    setValue,
     watch,
     formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
+  } = useForm({ mode: "onChange" });
+
+  const params = useParams();
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [age, setAge] = useState(null);
+  const [ages, setAge] = useState(null);
   const [classrooms, GetClassrooms] = useState("");
+  const [student, SetStudent] = useState({
+    age: "",
+    classroomID: "",
+    classroomName: "",
+    contactNo: "",
+    contactPersonName: "",
+    dbo: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    studentID: "",
+  });
 
-  const onSubmit = async (data) => {
-    try {
-      await axios.post(`${API_URL}/Student/AddStudent`, data).then((res) => {
-        console.log("data", data);
-        toast.success(
-          `${data.firstName} ${data.lastName} is added successfully.`,
-          {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-        window.location.reload();
-      });
-    } catch (error) {
-      if (error.response.data.statusCode === 400) {
-        setMessage(error.response.data.data);
-      }
-      console.log("data", data);
-    }
-  };
-
-  const onDelete = async (e, id) => {
+  const getAllStudentByID = async () => {
     try {
       await axios
-        .delete(`${API_URL}/Student/RemoveStudent/${id}`)
+        .get(`${API_URL}/Student/GetStudentById/${params.id}`)
         .then((res) => {
-          console.log("res", res);
-          toast.success(res.data.data, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          window.location.reload();
+          const getData = res.data.data;
+          SetStudent(getData);
+          setLoading(false);
         });
     } catch (error) {
-      if (error.response.data.statusCode) {
-        console.log(error.response.data.data);
-      }
+      console.log(error.response);
     }
   };
 
-  const onUpdate = async (updatedata) => {
-    await axios
-      .put(`${API_URL}/Student/UpdateStudent`, updatedata)
-      .then((res) => {
-        try {
-          console.log("up", res);
+  console.log("student.studentID", student.studentID);
+  const onSubmit = async (data) => {
+    try {
+      const upData = {
+        email: data.email,
+        age: data.age,
+        classroomId: data.classroomId,
+        contactNo: data.contactNo,
+        contactPersonName: data.contactPersonName,
+        dbo: data.dbo,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        studentID: student.studentID,
+      };
+
+      console.log("upData", upData);
+      await axios
+        .put(`${API_URL}/Student/UpdateStudent`, upData)
+        .then((res) => {
+          console.log("data", data);
           toast.success(
-            `${updatedata.UpdateSubjectName} is added successfully.`,
+            `${data.firstName} ${data.lastName} is updated successfully.`,
             {
               position: "bottom-right",
               autoClose: 5000,
@@ -93,12 +81,14 @@ function StudentEditPage() {
               theme: "light",
             }
           );
-        } catch (error) {
-          if (error.response.data.statusCode === 400) {
-            setMessage(error.response.data.data);
-          }
-        }
-      });
+          window.location.reload();
+        });
+    } catch (error) {
+      if (error.response.data.statusCode === 400) {
+        setMessage(error.response.data.data);
+      }
+      console.log("data", data);
+    }
   };
 
   const getAge = async () => {
@@ -118,7 +108,7 @@ function StudentEditPage() {
     if (6 > age && 18 < age) {
       setAge("You are not a valid student.(Age between 6-18) ");
     } else {
-      setAge(age);
+      setValue("age", age);
     }
     setAge(age);
     return age;
@@ -138,7 +128,10 @@ function StudentEditPage() {
 
   useEffect(() => {
     getAllClassroom();
+    getAllStudentByID();
   }, []);
+
+  console.log("stud", student);
 
   return (
     <div>
@@ -149,9 +142,11 @@ function StudentEditPage() {
             <h2 className="font-weight-bold">Add Student</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="row align-items-center mb-2">
+              <div className="row align-items-center mt-4 mb-2">
                 <div className="col-6 mt-1">
                   <div className="form-group">
+                    <input type="text" hidden {...register("StudentID")} />
+
                     <label>First Name</label>
                     <input
                       type="text"
@@ -159,6 +154,8 @@ function StudentEditPage() {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                       placeholder="Enter First Name"
+                      name="firstName"
+                      defaultValue={student.firstName}
                       {...register("firstName", {
                         required: "First name must be filled.",
                         pattern: {
@@ -179,6 +176,7 @@ function StudentEditPage() {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                       placeholder="Enter Last Name"
+                      defaultValue={student.lastName}
                       {...register("lastName", {
                         required: "Last name must be filled.",
                         pattern: {
@@ -203,6 +201,7 @@ function StudentEditPage() {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                       placeholder="Enter Contact Person Name"
+                      defaultValue={student.contactPersonName}
                       {...register("contactPersonName", {
                         required: "Contact Person Name must be filled.",
                         pattern: {
@@ -225,6 +224,7 @@ function StudentEditPage() {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                       placeholder="Enter Contact Number"
+                      defaultValue={student.contactNo}
                       {...register("contactNo", {
                         required: "Contact Number must be filled.",
                         pattern: {
@@ -245,6 +245,7 @@ function StudentEditPage() {
                     <label>Classroom</label>
                     <select
                       className="form-control dropdown-toggle"
+                      defaultValue={student.classroomName}
                       {...register("classroomId", {
                         required: "Classroom must be selected.",
                       })}
@@ -274,8 +275,9 @@ function StudentEditPage() {
                       className="form-control"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
+                      defaultValue={student.email}
                       placeholder="Enter Email"
-                      {...register("Email", {
+                      {...register("email", {
                         required: "Last name must be filled.",
                         pattern: {
                           value:
@@ -299,10 +301,11 @@ function StudentEditPage() {
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
                       placeholder="Enter Contact Person Name"
+                      defaultValue={student.dbo}
                       {...register("dbo", {
                         required: "Date of birth must be filled.",
                       })}
-                      onClick={() => {
+                      onBlur={() => {
                         getAge();
                       }}
                     />
@@ -318,7 +321,7 @@ function StudentEditPage() {
                       className="form-control"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
-                      value={age}
+                      defaultValue={student.age}
                       readOnly
                       {...register("age", {
                         required: "Age must be filled.",
@@ -340,32 +343,22 @@ function StudentEditPage() {
                 </button>
               </div>
 
+              <Link to={"/Student/List"}>
+                <div className="mt-2">
+                  <button
+                    type="submit"
+                    className="btn btn-outline-danger"
+                    style={{ width: "100%" }}
+                  >
+                    Cancle
+                  </button>
+                </div>
+              </Link>
+
               {message && <p className="mt-4">{message}</p>}
             </form>
             <br />
             <br />
-
-            <div className="row align-items-center mt-5 mb-4">
-              <div className="col-6" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2"> Student List</h4>
-              </div>
-              <div className="col-6" style={{ width: "100%" }}>
-                <form className="form-inline my-2 my-lg-0">
-                  <input
-                    className="form-control mr-sm-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button
-                    className="btn btn-outline-primary my-2 my-sm-0"
-                    type="submit"
-                  >
-                    Search
-                  </button>
-                </form>
-              </div>
-            </div>
           </div>
         </div>
       </div>

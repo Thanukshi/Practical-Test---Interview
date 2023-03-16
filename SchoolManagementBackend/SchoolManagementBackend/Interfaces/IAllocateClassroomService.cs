@@ -9,11 +9,11 @@ namespace SchoolManagementBackend.Interfaces
 
         Task<BaseResponse> GetAllAllocateClassroomDetails();
 
-        //Task<BaseResponse> GetAllocateSubjectByID(int id);
+        Task<BaseResponse> GetAllocateClassroomByID(int id);
 
         Task<BaseResponse> RemoveAllAlocateClassroom(int id);
 
         Task<BaseResponse> UpdateAllocateClassroom(AllocateClassroom allocateClassroom);
-        //}
+  
     }
 }

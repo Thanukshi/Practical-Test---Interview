@@ -6,6 +6,7 @@ import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
+import { Link } from "react-router-dom";
 
 function ClassroomPage() {
   const {
@@ -47,7 +48,6 @@ function ClassroomPage() {
   const getAllClassrooms = async () => {
     try {
       await axios.get(`${API_URL}/Classroom/GetClasses`).then((res) => {
-        console.log("first", res.data.data);
         GetClassroom(res.data.data);
         setLoading(false);
       });
@@ -79,30 +79,6 @@ function ClassroomPage() {
         console.log(error.response);
       }
     }
-  };
-
-  const onUpdate = async (updatedata) => {
-    await axios
-      .put(`${API_URL}/Classroom/UpdateClassroom`, updatedata)
-      .then((res) => {
-        try {
-          console.log("up", res);
-          toast.success(`${updatedata.Classroom} is added successfully.`, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        } catch (error) {
-          if (error.response.data.statusCode === 400) {
-            setMessage(error.response.data.data);
-          }
-        }
-      });
   };
 
   return (
@@ -188,13 +164,15 @@ function ClassroomPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {classroom.map((classroom, index) => (
-                        <tr key={classroom.classroomId}>
+                      {classroom.map((item, index) => (
+                        <tr key={item.classroomId}>
                           <th scope="row">{index + 1}</th>
-                          <td>{classroom.classroomName}</td>
+                          <td>{item.classroomName}</td>
                           <td>
                             <p>
-                              <img src={EditButton} />
+                              <Link to={`/classroom/edit/${item.classroomId}`}>
+                                <img src={EditButton} />
+                              </Link>
                             </p>
                           </td>
                           <td>
@@ -205,7 +183,7 @@ function ClassroomPage() {
                                     "Are you sure you want to delete this subject?"
                                   )
                                 ) {
-                                  onDelete(e, classroom.classroomId);
+                                  onDelete(e, item.classroomId);
                                 }
                               }}
                             >

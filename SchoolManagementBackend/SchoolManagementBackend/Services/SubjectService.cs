@@ -109,17 +109,18 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                var SubName = _dbContext.Subjects.AsNoTracking().Where(x => x.SubjectName == subject.SubjectName).FirstOrDefault();
-                if (SubName is null)
+                var SubDetails = _dbContext.Subjects.AsNoTracking().Where(x => x.SubjectId == subject.SubjectId).FirstOrDefault();
+                if (SubDetails == subject)
                 {
-                    _dbContext.Subjects.Update(SubName);
-                    await _dbContext.SaveChangesAsync();
+                    return new BaseResponseService().GetSuccessResponse($"This Subject is already used.");
 
-                    return new BaseResponseService().GetSuccessResponse(SubName);
                 }
                 else
                 {
-                    return new BaseResponseService().GetSuccessResponse($"This {SubName.SubjectName} is already used.");
+                    _dbContext.Subjects.Update(subject);
+                    await _dbContext.SaveChangesAsync();
+
+                    return new BaseResponseService().GetSuccessResponse(subject);
                 }
 
             }

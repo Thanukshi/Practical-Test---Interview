@@ -9,7 +9,7 @@ namespace SchoolManagementBackend.Interfaces
 
         Task<BaseResponse> GetAllAllocateSubjectDetails();
 
-        //Task<BaseResponse> GetAllocateSubjectByID(int id);
+        Task<BaseResponse> GetAllocateSubjectByID(int id);
 
         Task<BaseResponse> RemoveAllAlocateSubject(int id);
 

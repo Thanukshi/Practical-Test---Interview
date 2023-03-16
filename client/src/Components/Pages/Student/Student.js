@@ -62,58 +62,6 @@ function StudentPage() {
     }
   };
 
-  const onDelete = async (e, id) => {
-    try {
-      await axios
-        .delete(`${API_URL}/Student/RemoveStudent/${id}`)
-        .then((res) => {
-          console.log("res", res);
-          toast.success(res.data.data, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          window.location.reload();
-        });
-    } catch (error) {
-      if (error.response.data.statusCode) {
-        console.log(error.response.data.data);
-      }
-    }
-  };
-
-  const onUpdate = async (updatedata) => {
-    await axios
-      .put(`${API_URL}/Student/UpdateStudent`, updatedata)
-      .then((res) => {
-        try {
-          console.log("up", res);
-          toast.success(
-            `${updatedata.UpdateSubjectName} is added successfully.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-        } catch (error) {
-          if (error.response.data.statusCode === 400) {
-            setMessage(error.response.data.data);
-          }
-        }
-      });
-  };
-
   const getAge = async () => {
     var today = new Date();
     console.log("today", today);
@@ -163,7 +111,7 @@ function StudentPage() {
             <h2 className="font-weight-bold">Add Student</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="row align-items-center mb-2">
+              <div className="row align-items-center mt-5 mb-2">
                 <div className="col-6 mt-1">
                   <div className="form-group">
                     <label>First Name</label>
@@ -316,7 +264,8 @@ function StudentPage() {
                       {...register("dbo", {
                         required: "Date of birth must be filled.",
                       })}
-                      onClick={() => {
+                      onBlur={() => {
+                        console.log("*****");
                         getAge();
                       }}
                     />
@@ -356,98 +305,6 @@ function StudentPage() {
 
               {message && <p className="mt-4">{message}</p>}
             </form>
-            <br />
-            <br />
-
-            <div className="row align-items-center mt-5 mb-4">
-              <div className="col-6" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2"> Student List</h4>
-              </div>
-              <div className="col-6" style={{ width: "100%" }}>
-                <form className="form-inline my-2 my-lg-0">
-                  <input
-                    className="form-control mr-sm-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button
-                    className="btn btn-outline-primary my-2 my-sm-0"
-                    type="submit"
-                  >
-                    Search
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            {loading ? (
-              <div>Loading...</div>
-            ) : students && students.length > 0 ? (
-              <div className="row align-items-center">
-                <div className="col">
-                  <table class="table">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Contact Person</th>
-                        <th scope="col">Contact Number</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Classroom</th>
-                        <th scope="col">Date of Birth</th>
-                        <th scope="col">Age</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {students.map((item, index) => (
-                        <tr key={item.studentId}>
-                          <th scope="row">{index + 1}</th>
-                          <td>
-                            {item.firstName} {item.lastName}
-                          </td>
-                          <td>{item.contactPersonName}</td>
-                          <td>{item.contactNo}</td>
-                          <td>{item.email} </td>
-                          <td>{item.classroomName} </td>
-                          <td>{item.dbo} </td>
-                          <td>{item.age} </td>
-                          <td>
-                            <p>
-                              <img src={EditButton} />
-                            </p>
-                          </td>
-                          <td>
-                            <p
-                              onClick={(e) => {
-                                if (
-                                  window.confirm(
-                                    `Are you sure you want to delete this ${item.firstName} ${item.lastName} student?`
-                                  )
-                                ) {
-                                  onDelete(e, item.studentId);
-                                }
-                              }}
-                            >
-                              <img src={DeleteButton} />
-                            </p>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            ) : (
-              <div>
-                Student List is not found at this moment. Please try again
-                later.
-                <br />
-                <br />
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
@@ -17,7 +18,6 @@ function SubjectPage() {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [subjects, GetSubjects] = useState("");
-
 
   useEffect(() => {
     getAllSubjects();
@@ -80,33 +80,6 @@ function SubjectPage() {
         console.log(error.response.data.data);
       }
     }
-  };
-
-  const onUpdate = async (updatedata) => {
-    await axios
-      .put(`${API_URL}/Subject/UpdateSubject`, updatedata)
-      .then((res) => {
-        try {
-          console.log("up", res);
-          toast.success(
-            `${updatedata.UpdateSubjectName} is added successfully.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-        } catch (error) {
-          if (error.response.data.statusCode === 400) {
-            setMessage(error.response.data.data);
-          }
-        }
-      });
   };
 
   return (
@@ -198,7 +171,9 @@ function SubjectPage() {
                           <td>{sub.subjectName}</td>
                           <td>
                             <p>
-                              <img src={EditButton} />
+                              <Link to={`/Subject/Edit/${sub.subjectId}`}>
+                                <img src={EditButton} />
+                              </Link>
                             </p>
                           </td>
                           <td>

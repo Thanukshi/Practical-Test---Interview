@@ -65,26 +65,27 @@ namespace SchoolManagementBackend.Services
         }
 
 
-        //public Task<BaseResponse> GetAllocateSubjectByID(int id)
-        //{
-        //    try
-        //    {
-        //        var ClassDetails = _dbContext.Classrooms.Where(x => x.ClassroomId == id).FirstOrDefault();
-        //        if (ClassDetails == null)
-        //        {
-        //            return Task.FromResult(new BaseResponseService().GetErrorResponse($"This {id} does not exist."));
-        //        }
-        //        else
-        //        {
-        //            return Task.FromResult(new BaseResponseService().GetSuccessResponse(ClassDetails));
-        //        }
+        public Task<BaseResponse> GetAllocateClassroomByID(int id)
+        {
+            try
+            {
+                var ASDetails = _dbContext.GetAllAllocateClassroomList.FromSqlRaw("Exec GetAllAllocateClassroomList").ToList();
+                var newASDetails = ASDetails.Find(x => x.ClassroomID == id);
+                if (newASDetails == null)
+                {
+                    return Task.FromResult(new BaseResponseService().GetErrorResponse($"This {id} does not exist."));
+                }
+                else
+                {
+                    return Task.FromResult(new BaseResponseService().GetSuccessResponse(newASDetails));
+                }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Task.FromResult(new BaseResponseService().GetErrorResponse(ex));
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult(new BaseResponseService().GetErrorResponse(ex));
+            }
+        }
 
 
         public async Task<BaseResponse> RemoveAllAlocateClassroom(int id)

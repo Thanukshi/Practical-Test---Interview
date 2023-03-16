@@ -1,0 +1,180 @@
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Nav from "../../NavBar/Navbar.js";
+import axios from "axios";
+import { API_URL } from "../../../Data/API.js";
+import { toast } from "react-toastify";
+import EditButton from "../../../assets/images/edit.png";
+import DeleteButton from "../../../assets/images/delete.png";
+
+function AllocateSubjectEdit() {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
+
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [teachers, GetTeachers] = useState("");
+  const [subjects, GetSubjects] = useState("");
+  const [allocateSub, GetAllocateSub] = useState("");
+
+  const onSubmit = async (data) => {
+    try {
+      await axios
+        .post(`${API_URL}/AllocateSubject/AddAllocateSubject`, data)
+        .then((res) => {
+          console.log("data", data);
+          toast.success(
+            `${data.subjectId} is allocated  to ${data.teacherId} successfully.`,
+            {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
+          window.location.reload();
+        });
+    } catch (error) {
+      if (error.response.data.statusCode === 400) {
+        setMessage(error.response.data.data);
+      }
+      console.log("data", error);
+    }
+  };
+
+  const getAllocateSubjectByID = async () => {
+    try {
+      await axios
+        .get(`${API_URL}/AllocateSubject/GetAllocateSubject`)
+        .then((res) => {
+          console.log("alll", res.data.data);
+          GetAllocateSub(res.data.data);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const getAllTeachers = async () => {
+    try {
+      await axios.get(`${API_URL}/Teacher/GetTeachers`).then((res) => {
+        console.log("first", res.data.data);
+        GetTeachers(res.data.data);
+        setLoading(false);
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const getAllSubjects = async () => {
+    try {
+      await axios.get(`${API_URL}/Subject/GetSubjectList`).then((res) => {
+        console.log("first", res.data.data);
+        GetSubjects(res.data.data);
+        setLoading(false);
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  useEffect(() => {
+    getAllTeachers();
+    getAllSubjects();
+    getAllocateSubjectByID();
+  }, []);
+
+  return (
+    <div>
+      <Nav></Nav>;
+      <div className="container p-1">
+        <div className="row align-items-start">
+          <div className="col">
+            <h2 className="font-weight-bold">Update Allocate Subjects and Teachers</h2>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="row align-items-center mb-2">
+                <div className="col-6 mt-1">
+                  <div className="form-group">
+                    <label>Teacher Name</label>
+                    <select
+                      className="form-control dropdown-toggle"
+                      {...register("teacherId", {
+                        required: "Teacher name must be selected.",
+                      })}
+                    >
+                      <option selected={true} disabled defaultValue="DEFAULT">
+                        Select Teacher
+                      </option>
+                      {teachers && teachers.length > 0 ? (
+                        teachers.map((item, index) => (
+                          <option key={index} value={item.teacherId}>
+                            {item.firstName} {item.lastName}
+                          </option>
+                        ))
+                      ) : (
+                        <option>No Teacher Found</option>
+                      )}
+                    </select>
+                    {errors.teacherId && <p>{errors.teacherId.message}</p>}
+                  </div>
+                </div>
+                <div className="col-6 mt-1">
+                  <div className="form-group">
+                    <label>Subject</label>
+                    <select
+                      className="form-control dropdown-toggle"
+                      {...register("subjectId", {
+                        required: "Subject name must be selected.",
+                      })}
+                    >
+                      <option selected={true} disabled defaultValue="DEFAULT">
+                        Select Subject
+                      </option>
+                      {subjects && subjects.length > 0 ? (
+                        subjects.map((item, index) => (
+                          <option key={index} value={item.subjectId}>
+                            {item.subjectName}
+                          </option>
+                        ))
+                      ) : (
+                        <option>No Teacher Found</option>
+                      )}
+                    </select>
+
+                    {errors.subjectId && <p>{errors.subjectId.message}</p>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <button
+                  type="submit"
+                  className="btn btn-outline-primary"
+                  style={{ width: "100%" }}
+                >
+                  Save
+                </button>
+              </div>
+
+              {message && <p className="mt-4">{message}</p>}
+            </form>
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default AllocateSubjectEdit;

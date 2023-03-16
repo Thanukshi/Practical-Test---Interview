@@ -6,6 +6,7 @@ import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
+import { Link } from "react-router-dom";
 
 function TeacherPage() {
   const {
@@ -273,7 +274,9 @@ function TeacherPage() {
                           <td>{t.email} </td>
                           <td>
                             <p>
-                              <img src={EditButton} />
+                              <Link to={`/Teacher/Edit/${t.teacherId}`}>
+                                <img src={EditButton} />
+                              </Link>
                             </p>
                           </td>
                           <td>
