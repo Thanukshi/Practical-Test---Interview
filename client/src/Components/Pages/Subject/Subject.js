@@ -17,7 +17,9 @@ function SubjectPage() {
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [subjects, GetSubjects] = useState("");
+  const [subjects, GetSubjects] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredResults, setFilteredResults] = useState([]);
 
   useEffect(() => {
     getAllSubjects();
@@ -82,6 +84,28 @@ function SubjectPage() {
     }
   };
 
+  const filteredData = subjects.filter((item) => {
+    return Object.values(item)
+      .join("")
+      .toLowerCase()
+      .includes(searchInput.toLowerCase());
+  });
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    if (searchInput !== "") {
+      subjects.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(subjects);
+    }
+  };
+
   return (
     <div>
       <Nav></Nav>;
@@ -128,30 +152,69 @@ function SubjectPage() {
             <br />
             <br />
 
-            <div className="row align-items-center mb-3">
+            <div className="row  mb-3">
               <div className="col-6" style={{ width: "100%" }}>
                 <h4 className="font-weight-bold mb-2"> Subjects List</h4>
               </div>
-              <div className="col-6" style={{ width: "100%" }}>
+              <div className="col ml-5 mr-0">
                 <form className="form-inline my-2 my-lg-0">
                   <input
                     className="form-control mr-sm-2"
                     type="search"
-                    placeholder="Search"
+                    placeholder="Search..."
+                    style={{ width: "110%", border: "rounded-5" }}
                     aria-label="Search"
+                    onChange={(e) => searchItems(e.target.value)}
                   />
-                  <button
-                    className="btn btn-outline-primary my-2 my-sm-0"
-                    type="submit"
-                  >
-                    Search
-                  </button>
                 </form>
               </div>
             </div>
 
             {loading ? (
               <div>Loading...</div>
+            ) : searchInput.length > 1 ? (
+              filteredResults.map((sub, index) => {
+                return (
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Subject Name</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr key={sub.subjectId}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{sub.subjectName}</td>
+                        <td>
+                          <p>
+                            <Link to={`/Subject/Edit/${sub.subjectId}`}>
+                              <img src={EditButton} />
+                            </Link>
+                          </p>
+                        </td>
+                        <td>
+                          <p
+                            onClick={(e) => {
+                              if (
+                                window.confirm(
+                                  "Are you sure you want to delete this subject?"
+                                )
+                              ) {
+                                onDelete(e, sub.subjectId);
+                              }
+                            }}
+                          >
+                            <img src={DeleteButton} />
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                );
+              })
             ) : subjects && subjects.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">
