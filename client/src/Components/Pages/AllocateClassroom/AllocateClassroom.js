@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function AllocateClassroom() {
   const {
@@ -20,9 +22,9 @@ function AllocateClassroom() {
   const [teachers, GetTeachers] = useState([]);
   const [classrooms, GetClassrooms] = useState([]);
   const [allocateClass, GetAllocateClass] = useState([]);
-
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const doc = new jsPDF("portrait");
 
   const onSubmit = async (data) => {
     try {
@@ -135,6 +137,28 @@ function AllocateClassroom() {
     }
   };
 
+  const downloadReport = () => {
+    doc.text("Subject List", 30, 10);
+
+    let array = [];
+    allocateClass.map((al, index) => {
+      let row = [];
+      row.push(index + 1);
+      row.push(al.firstName + " " + al.lastName);
+      row.push(al.classroomName);
+      array.push(row);
+      return row;
+    });
+
+    doc.autoTable({
+      head: [["#", "Teacher Name", "Classroom Name"]],
+
+      body: array,
+    });
+
+    doc.save("Allocate_Classroom_Report.pdf");
+  };
+
   useEffect(() => {
     getAllTeachers();
     getAllClassroom();
@@ -222,12 +246,12 @@ function AllocateClassroom() {
             <br />
 
             <div className="row align-items-center mt-5 mb-4">
-              <div className="col-6" style={{ width: "100%" }}>
+              <div className="col" style={{ width: "100%" }}>
                 <h4 className="font-weight-bold mb-2">
                   Allocate Classrooms List
                 </h4>
               </div>
-              <div className="col-6" style={{ width: "100%" }}>
+              <div className="col ml-5 mr-0" style={{ width: "100%" }}>
                 <form className="form-inline my-2 my-lg-0">
                   <input
                     className="form-control mr-sm-2"
@@ -238,6 +262,13 @@ function AllocateClassroom() {
                     onChange={(e) => searchItems(e.target.value)}
                   />
                 </form>
+              </div>
+              <div className="col buttons2  ml-5 mr-0">
+                <Link onClick={downloadReport} className="button_pdf">
+                  &nbsp;&nbsp;Download Report
+                </Link>
+                <br />
+                <br />
               </div>
             </div>
 
