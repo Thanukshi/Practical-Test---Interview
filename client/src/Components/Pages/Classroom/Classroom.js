@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function ClassroomPage() {
   const {
@@ -20,6 +22,7 @@ function ClassroomPage() {
   const [classroom, GetClassroom] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const doc = new jsPDF("portrait");
 
   useEffect(() => {
     getAllClassrooms();
@@ -105,6 +108,27 @@ function ClassroomPage() {
     }
   };
 
+  const downloadReport = () => {
+    doc.text("Classroom List", 30, 10);
+
+    let array = [];
+    classroom.map((classroom, index) => {
+      let row = [];
+      row.push(index + 1);
+      row.push(classroom.classroomName);
+      array.push(row);
+      return row;
+    });
+
+    doc.autoTable({
+      head: [["#", "Classroom Name"]],
+
+      body: array,
+    });
+
+    doc.save("Classroom_Report.pdf");
+  };
+
   return (
     <div>
       <Nav></Nav>;
@@ -152,10 +176,10 @@ function ClassroomPage() {
             <br />
 
             <div className="row align-items-center mb-3">
-              <div className="col-6" style={{ width: "100%" }}>
+              <div className="col" style={{ width: "100%" }}>
                 <h4 className="font-weight-bold mb-2"> Classroom List</h4>
               </div>
-              <div className="col-6" style={{ width: "100%" }}>
+              <div className="col" style={{ width: "100%" }}>
                 <form className="form-inline my-2 my-lg-0">
                   <input
                     className="form-control mr-sm-2"
@@ -166,6 +190,13 @@ function ClassroomPage() {
                     onChange={(e) => searchItems(e.target.value)}
                   />
                 </form>
+              </div>
+              <div className="col buttons2  ml-5 mr-0">
+                <Link onClick={downloadReport} className="button_pdf">
+                  &nbsp;&nbsp;Download Report
+                </Link>
+                <br />
+                <br />
               </div>
             </div>
 

@@ -110,7 +110,7 @@ function SubjectPage() {
   };
 
   const downloadReport = () => {
-    doc.text("Subject", 30, 10);
+    doc.text("Subject List", 30, 10);
 
     let array = [];
     subjects.map((sub, index) => {
