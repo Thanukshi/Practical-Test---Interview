@@ -6,6 +6,8 @@ import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function StudentList() {
   const [message, setMessage] = useState(null);
@@ -13,6 +15,7 @@ function StudentList() {
   const [students, GetStudents] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const doc = new jsPDF("landscape");
 
   const getAllStudents = async () => {
     try {
@@ -74,6 +77,44 @@ function StudentList() {
     }
   };
 
+  const downloadReport = () => {
+    doc.text("Student List", 30, 10);
+
+    let array = [];
+    students.map((st, index) => {
+      let row = [];
+      row.push(index + 1);
+      row.push(st.firstName + " " + st.lastName);
+      row.push(st.contactPersonName);
+      row.push(st.contactNo);
+      row.push(st.email);
+      row.push(st.classroomName);
+      row.push(st.dbo);
+      row.push(st.age);
+      array.push(row);
+      return row;
+    });
+
+    doc.autoTable({
+      head: [
+        [
+          "#",
+          "Student Name",
+          "Contact Person",
+          "Contact Number",
+          "Email",
+          "Classroom",
+          "Date of Birth",
+          "Age",
+        ],
+      ],
+
+      body: array,
+    });
+
+    doc.save("Student_Report.pdf");
+  };
+
   useEffect(() => {
     getAllStudents();
   }, []);
@@ -97,6 +138,13 @@ function StudentList() {
                 onChange={(e) => searchItems(e.target.value)}
               />
             </form>
+          </div>
+          <div className="col buttons2  ml-5 mr-0">
+            <Link onClick={downloadReport} className="button_pdf">
+              &nbsp;&nbsp;Download Report
+            </Link>
+            <br />
+            <br />
           </div>
         </div>
 

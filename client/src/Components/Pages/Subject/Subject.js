@@ -22,7 +22,7 @@ function SubjectPage() {
   const [subjects, GetSubjects] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
-  const doc = new jsPDF("landscape");
+  const doc = new jsPDF("portrait");
 
   useEffect(() => {
     getAllSubjects();
@@ -110,7 +110,7 @@ function SubjectPage() {
   };
 
   const downloadReport = () => {
-    doc.text("Subject Report", 30, 10);
+    doc.text("Subject", 30, 10);
 
     let array = [];
     subjects.map((sub, index) => {
@@ -192,9 +192,9 @@ function SubjectPage() {
                   />
                 </form>
               </div>
-              <div className="col buttons2">
-                <Link onClick={downloadReport} class="button_pdf">
-                  <i class="fas fa-download"></i>&nbsp;&nbsp;Download Report
+              <div className="col buttons2  ml-5 mr-0">
+                <Link onClick={downloadReport} className="button_pdf">
+                  &nbsp;&nbsp;Download Report
                 </Link>
                 <br />
                 <br />
