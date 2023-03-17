@@ -17,7 +17,9 @@ function TeacherPage() {
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [teachers, GetTeachers] = useState("");
+  const [teachers, GetTeachers] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredResults, setFilteredResults] = useState([]);
 
   useEffect(() => {
     getAllTeachers();
@@ -84,31 +86,26 @@ function TeacherPage() {
     }
   };
 
-  const onUpdate = async (updatedata) => {
-    await axios
-      .put(`${API_URL}/Subject/UpdateSubject`, updatedata)
-      .then((res) => {
-        try {
-          console.log("up", res);
-          toast.success(
-            `${updatedata.UpdateSubjectName} is added successfully.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-        } catch (error) {
-          if (error.response.data.statusCode === 400) {
-            setMessage(error.response.data.data);
-          }
-        }
+  const filteredData = teachers.filter((item) => {
+    return Object.values(item)
+      .join("")
+      .toLowerCase()
+      .includes(searchInput.toLowerCase());
+  });
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    if (searchInput !== "") {
+      teachers.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
       });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(teachers);
+    }
   };
 
   return (
@@ -234,21 +231,66 @@ function TeacherPage() {
                   <input
                     className="form-control mr-sm-2"
                     type="search"
-                    placeholder="Search"
+                    placeholder="Search..."
+                    style={{ width: "110%", border: "rounded-5" }}
                     aria-label="Search"
+                    onChange={(e) => searchItems(e.target.value)}
                   />
-                  <button
-                    className="btn btn-outline-primary my-2 my-sm-0"
-                    type="submit"
-                  >
-                    Search
-                  </button>
                 </form>
               </div>
             </div>
 
             {loading ? (
               <div>Loading...</div>
+            ) : searchInput.length > 1 ? (
+              filteredResults.map((t, index) => {
+                return (
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Contact Number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr key={t.teacherId}>
+                        <th scope="row">{index + 1}</th>
+                        <td>
+                          {t.firstName} {t.lastName}
+                        </td>
+                        <td>{t.contactNo}</td>
+                        <td>{t.email} </td>
+                        <td>
+                          <p>
+                            <Link to={`/Teacher/Edit/${t.teacherId}`}>
+                              <img src={EditButton} />
+                            </Link>
+                          </p>
+                        </td>
+                        <td>
+                          <p
+                            onClick={(e) => {
+                              if (
+                                window.confirm(
+                                  "Are you sure you want to delete this teacher?"
+                                )
+                              ) {
+                                onDelete(e, t.teacherId);
+                              }
+                            }}
+                          >
+                            <img src={DeleteButton} />
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                );
+              })
             ) : teachers && teachers.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">

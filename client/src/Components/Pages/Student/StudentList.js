@@ -10,7 +10,9 @@ import DeleteButton from "../../../assets/images/delete.png";
 function StudentList() {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [students, GetStudents] = useState("");
+  const [students, GetStudents] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredResults, setFilteredResults] = useState([]);
 
   const getAllStudents = async () => {
     try {
@@ -50,6 +52,28 @@ function StudentList() {
     }
   };
 
+  const filteredData = students.filter((item) => {
+    return Object.values(item)
+      .join("")
+      .toLowerCase()
+      .includes(searchInput.toLowerCase());
+  });
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    if (searchInput !== "") {
+      students.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(students);
+    }
+  };
+
   useEffect(() => {
     getAllStudents();
   }, []);
@@ -67,21 +91,74 @@ function StudentList() {
               <input
                 className="form-control mr-sm-2"
                 type="search"
-                placeholder="Search"
+                placeholder="Search..."
+                style={{ width: "110%", border: "rounded-5" }}
                 aria-label="Search"
+                onChange={(e) => searchItems(e.target.value)}
               />
-              <button
-                className="btn btn-outline-primary my-2 my-sm-0"
-                type="submit"
-              >
-                Search
-              </button>
             </form>
           </div>
         </div>
 
         {loading ? (
           <div>Loading...</div>
+        ) : searchInput.length > 1 ? (
+          filteredResults.map((item, index) => {
+            return (
+              <table class="table" style={{ width: "100%" }}>
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Contact Person</th>
+                    <th scope="col">Contact Number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Classroom</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr key={item.studentId}>
+                    <th scope="row">{index + 1}</th>
+                    <td>
+                      {item.firstName} {item.lastName}
+                    </td>
+                    <td>{item.contactPersonName}</td>
+                    <td>{item.contactNo}</td>
+                    <td>{item.email} </td>
+                    <td>{item.classroomName} </td>
+                    <td>{item.dbo} </td>
+                    <td>{item.age} </td>
+                    <td>
+                      <p>
+                        <Link to={`/Student/Edit/${item.studentID}`}>
+                          <img src={EditButton} />
+                        </Link>
+                      </p>
+                    </td>
+                    <td>
+                      <p
+                        onClick={(e) => {
+                          if (
+                            window.confirm(
+                              `Are you sure you want to delete this ${item.firstName} ${item.lastName} student?`
+                            )
+                          ) {
+                            onDelete(e, item.studentID);
+                          }
+                        }}
+                      >
+                        <img src={DeleteButton} />
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            );
+          })
         ) : students && students.length > 0 ? (
           <div className="row align-items-center mt-5 ">
             <div className="col">

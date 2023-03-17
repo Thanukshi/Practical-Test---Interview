@@ -19,9 +19,9 @@ function StudentPage() {
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [students, GetStudents] = useState("");
+  const [students, GetStudents] = useState([]);
   const [age, setAge] = useState(null);
-  const [classrooms, GetClassrooms] = useState("");
+  const [classrooms, GetClassrooms] = useState([]);
 
   const onSubmit = async (data) => {
     try {
@@ -47,18 +47,6 @@ function StudentPage() {
         setMessage(error.response.data.data);
       }
       console.log("data", data);
-    }
-  };
-
-  const getAllStudents = async () => {
-    try {
-      await axios.get(`${API_URL}/Student/GetStudent`).then((res) => {
-        console.log("first", res.data.data);
-        GetStudents(res.data.data);
-        setLoading(false);
-      });
-    } catch (error) {
-      console.log(error.response);
     }
   };
 
@@ -98,7 +86,6 @@ function StudentPage() {
   };
 
   useEffect(() => {
-    getAllStudents();
     getAllClassroom();
   }, []);
 
