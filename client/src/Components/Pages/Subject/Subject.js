@@ -7,6 +7,8 @@ import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function SubjectPage() {
   const {
@@ -20,6 +22,7 @@ function SubjectPage() {
   const [subjects, GetSubjects] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const doc = new jsPDF("landscape");
 
   useEffect(() => {
     getAllSubjects();
@@ -106,6 +109,27 @@ function SubjectPage() {
     }
   };
 
+  const downloadReport = () => {
+    doc.text("Subject Report", 30, 10);
+
+    let array = [];
+    subjects.map((sub, index) => {
+      let row = [];
+      row.push(index + 1);
+      row.push(sub.subjectName);
+      array.push(row);
+      return row;
+    });
+
+    doc.autoTable({
+      head: [["#", "Subject Name"]],
+
+      body: array,
+    });
+
+    doc.save("Subject_Report.pdf");
+  };
+
   return (
     <div>
       <Nav></Nav>;
@@ -167,6 +191,13 @@ function SubjectPage() {
                     onChange={(e) => searchItems(e.target.value)}
                   />
                 </form>
+              </div>
+              <div className="col buttons2">
+                <Link onClick={downloadReport} class="button_pdf">
+                  <i class="fas fa-download"></i>&nbsp;&nbsp;Download Report
+                </Link>
+                <br />
+                <br />
               </div>
             </div>
 
