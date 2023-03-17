@@ -252,7 +252,7 @@ function AllocateSubject() {
                   Allocate Subjects List
                 </h4>
               </div>
-              <div className="col" style={{ width: "100%" }}>
+              <div className="col  ml-5 mr-0" style={{ width: "100%" }}>
                 <form className="form-inline my-2 my-lg-0">
                   <input
                     className="form-control mr-sm-2"
