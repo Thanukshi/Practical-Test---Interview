@@ -51,6 +51,3 @@ CREATE TABLE AllocateClassroom (
 	ClassroomID int FOREIGN KEY REFERENCES Classroom(ClassroomID)
 );
  
-
- select *
- from AllocateClassroom

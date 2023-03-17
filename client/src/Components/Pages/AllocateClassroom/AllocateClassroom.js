@@ -17,9 +17,12 @@ function AllocateClassroom() {
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [teachers, GetTeachers] = useState("");
-  const [classrooms, GetClassrooms] = useState("");
-  const [allocateClass, GetAllocateClass] = useState("");
+  const [teachers, GetTeachers] = useState([]);
+  const [classrooms, GetClassrooms] = useState([]);
+  const [allocateClass, GetAllocateClass] = useState([]);
+
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredResults, setFilteredResults] = useState([]);
 
   const onSubmit = async (data) => {
     try {
@@ -107,6 +110,28 @@ function AllocateClassroom() {
       if (error.response.data.statusCode) {
         console.log(error.response.data.data);
       }
+    }
+  };
+
+  const filteredData = allocateClass.filter((item) => {
+    return Object.values(item)
+      .join("")
+      .toLowerCase()
+      .includes(searchInput.toLowerCase());
+  });
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    if (searchInput !== "") {
+      allocateClass.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(allocateClass);
     }
   };
 
@@ -207,21 +232,70 @@ function AllocateClassroom() {
                   <input
                     className="form-control mr-sm-2"
                     type="search"
-                    placeholder="Search"
+                    placeholder="Search..."
+                    style={{ width: "110%", border: "rounded-5" }}
                     aria-label="Search"
+                    onChange={(e) => searchItems(e.target.value)}
                   />
-                  <button
-                    className="btn btn-outline-primary my-2 my-sm-0"
-                    type="submit"
-                  >
-                    Search
-                  </button>
                 </form>
               </div>
             </div>
 
             {loading ? (
               <div>Loading...</div>
+            ) : searchInput.length > 1 ? (
+              filteredResults.map((item, index) => {
+                return (
+                  <div className="row align-items-center">
+                    <div className="col">
+                      <table className="table">
+                        <thead className="thead-dark">
+                          <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Teacher Name</th>
+                            <th scope="col">Classroom Name </th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr key={item.AllocateSubjectId}>
+                            <th scope="row">{index + 1}</th>
+                            <td>
+                              {item.firstName} {item.lastName}
+                            </td>
+                            <td>{item.classroomName}</td>
+                            <td>
+                              <p>
+                                <Link
+                                  to={`/AllocateClassroom/Edit/${item.allocateClassroomID}`}
+                                >
+                                  <img src={EditButton} />
+                                </Link>
+                              </p>
+                            </td>
+                            <td>
+                              <p
+                                onClick={(e) => {
+                                  if (
+                                    window.confirm(
+                                      "Are you sure you want to delete this allocate classroom?"
+                                    )
+                                  ) {
+                                    onDelete(e, item.allocateClassroomID);
+                                  }
+                                }}
+                              >
+                                <img src={DeleteButton} />
+                              </p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                );
+              })
             ) : allocateClass && allocateClass.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">

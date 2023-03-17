@@ -19,7 +19,6 @@ function StudentPage() {
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [students, GetStudents] = useState([]);
   const [age, setAge] = useState(null);
   const [classrooms, GetClassrooms] = useState([]);
 

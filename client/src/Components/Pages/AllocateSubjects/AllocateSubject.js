@@ -17,9 +17,12 @@ function AllocateSubject() {
 
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [teachers, GetTeachers] = useState("");
-  const [subjects, GetSubjects] = useState("");
-  const [allocateSub, GetAllocateSub] = useState("");
+  const [teachers, GetTeachers] = useState([]);
+  const [subjects, GetSubjects] = useState([]);
+  const [allocateSub, GetAllocateSub] = useState([]);
+
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredResults, setFilteredResults] = useState([]);
 
   const onSubmit = async (data) => {
     try {
@@ -85,6 +88,28 @@ function AllocateSubject() {
       });
     } catch (error) {
       console.log(error.response);
+    }
+  };
+
+  const filteredData = allocateSub.filter((item) => {
+    return Object.values(item)
+      .join("")
+      .toLowerCase()
+      .includes(searchInput.toLowerCase());
+  });
+
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    if (searchInput !== "") {
+      allocateSub.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(allocateSub);
     }
   };
 
@@ -208,21 +233,69 @@ function AllocateSubject() {
                   <input
                     className="form-control mr-sm-2"
                     type="search"
-                    placeholder="Search"
+                    placeholder="Search..."
+                    style={{ width: "110%", border: "rounded-5" }}
                     aria-label="Search"
+                    onChange={(e) => searchItems(e.target.value)}
                   />
-                  <button
-                    className="btn btn-outline-primary my-2 my-sm-0"
-                    type="submit"
-                  >
-                    Search
-                  </button>
                 </form>
               </div>
             </div>
 
             {loading ? (
               <div>Loading...</div>
+            ) : searchInput.length > 1 ? (
+              filteredResults.map((item, index) => {
+                return (
+                  <div className="row align-items-center">
+                    <div className="col">
+                      <table className="table">
+                        <thead className="thead-dark">
+                          <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Teacher Name</th>
+                            <th scope="col">Subject Name </th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr key={item.AllocateSubjectId}>
+                            <th scope="row">{index + 1}</th>
+                            <td>
+                              {item.firstName} {item.lastName}
+                            </td>
+                            <td>{item.subjectName}</td>
+                            <td>
+                              <Link
+                                to={`/AllocateSubject/Edit/${item.allocateSubjectId}`}
+                              >
+                                <img src={EditButton} />
+                              </Link>
+                              <p></p>
+                            </td>
+                            <td>
+                              <p
+                                onClick={(e) => {
+                                  if (
+                                    window.confirm(
+                                      "Are you sure you want to delete this teacher?"
+                                    )
+                                  ) {
+                                    onDelete(e, item.allocateSubjectId);
+                                  }
+                                }}
+                              >
+                                <img src={DeleteButton} />
+                              </p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                );
+              })
             ) : allocateSub && allocateSub.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">
