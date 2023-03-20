@@ -310,7 +310,7 @@ function AllocateSubject() {
                                 onClick={(e) => {
                                   if (
                                     window.confirm(
-                                      "Are you sure you want to delete this teacher?"
+                                      "Are you sure you want to delete this allocated subject?"
                                     )
                                   ) {
                                     onDelete(e, item.allocateSubjectId);
@@ -361,7 +361,7 @@ function AllocateSubject() {
                               onClick={(e) => {
                                 if (
                                   window.confirm(
-                                    "Are you sure you want to delete this teacher?"
+                                    "Are you sure you want to delete this allocated subject?"
                                   )
                                 ) {
                                   onDelete(e, item.allocateSubjectId);

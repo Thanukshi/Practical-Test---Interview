@@ -14,9 +14,16 @@ function AllocateClassroomEdit() {
   } = useForm({ mode: "onChange" });
 
   const [message, setMessage] = useState(null);
-  const [teachers, GetTeachers] = useState("");
-  const [classrooms, GetClassrooms] = useState("");
-  const [allocateClass, GetAllocateClass] = useState("");
+  const [teachers, GetTeachers] = useState([]);
+  const [classrooms, GetClassrooms] = useState([]);
+  const [allocateClass, GetAllocateClass] = useState({
+    allocateClassroomID: "",
+    classroomID: "",
+    classroomName: "",
+    firstName: "",
+    lastName: "",
+    teacherID: "",
+  });
 
   const params = useParams();
 
@@ -58,8 +65,11 @@ function AllocateClassroomEdit() {
           `${API_URL}/AllocateClassroom/GetAllocateClassroomByID/${params.id}`
         )
         .then((res) => {
-          console.log("alll", res.data.data);
-          GetAllocateClass(res.data.data);
+          const getData = res.data.data;
+          GetAllocateClass(getData);
+
+          console.log("dddaa", res.data.data);
+          console.log("ddd", allocateClass);
         });
     } catch (error) {
       if (error.data.status === 400) {
@@ -113,6 +123,7 @@ function AllocateClassroomEdit() {
                     <label>Teacher Name</label>
                     <select
                       className="form-control dropdown-toggle"
+                      defaultValue={allocateClass.firstName}
                       {...register("teacherId", {
                         required: "Teacher name must be selected.",
                       })}

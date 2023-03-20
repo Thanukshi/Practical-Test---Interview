@@ -27,10 +27,13 @@ function App() {
           <Route path="/navbar" element={<Navbar />} />
           <Route path="/subject" element={<SubjectPage />} />
           <Route path="/Subject/Edit/:id" element={<SubjectEditPage />} />
+
           <Route path="/classroom" element={<ClassroomPage />} />
           <Route path="/classroom/edit/:id" element={<ClassroomEditPage />} />
+
           <Route path="/Teacher" element={<TeacherPage />} />
           <Route path="/Teacher/Edit/:id" element={<TeacherEditPage />} />
+          
           <Route path="/AllocateSubject" element={<AllocateSubject />} />
           <Route
             path="/AllocateSubject/Edit/:id"

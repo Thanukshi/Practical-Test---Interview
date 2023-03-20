@@ -26,6 +26,11 @@ namespace SchoolManagementBackend.Entities
         public DbSet<AllocateSubjectList> GetAllAllocateSubjectList { get; set; }
         public DbSet<AllocateClassroomList> GetAllAllocateClassroomList { get; set; }
         public DbSet<StudentList> GetAllStudentList { get; set; }
+        public DbSet<Classroom> RemoveClassrooms { get; set; }
+        public DbSet<Teacher> RemoveTeachers { get; set; }
+
+        public DbSet<AllocateSubject> RemoveSubjectList { get; set; }
+        //public DbSet<Subject> RemoveSubjects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

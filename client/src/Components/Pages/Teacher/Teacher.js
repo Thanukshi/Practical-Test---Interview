@@ -83,8 +83,19 @@ function TeacherPage() {
           window.location.reload();
         });
     } catch (error) {
-      if (error.response.data.statusCode) {
-        console.log(error.response.data.data);
+      if (error.response.data.statusCode === 500) {
+        setMessage(error.response.data.data);
+        toast.success("Deleted", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        window.location.reload();
       }
     }
   };

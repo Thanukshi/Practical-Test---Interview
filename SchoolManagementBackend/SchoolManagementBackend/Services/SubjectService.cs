@@ -79,29 +79,29 @@ namespace SchoolManagementBackend.Services
             }
         }
 
-        public async Task<BaseResponse> RemoveSubject(int id)
+        public Task<BaseResponse> RemoveSubject(int id)
         {
             try
             {
                 Subject subjects = (Subject)_dbContext.Subjects.Where(x => x.SubjectId == id).First();
 
+               var subDetails = _dbContext.RemoveSubjectList.FromSqlRaw($"Exec RemoveSubjectList @id = {id}").ToList();
+
                 if (subjects is null)
                 {
-                    return new BaseResponseService().GetErrorResponse($"This {id} does not exist.");
+                    return Task.FromResult(new BaseResponseService().GetErrorResponse($"This {id} does not exist."));
                 }
                 else
                 {
-                    _dbContext.Subjects.Remove(subjects);
-                    await _dbContext.SaveChangesAsync();
 
                     var SubjectList = _dbContext.Subjects.ToList();
 
-                    return new BaseResponseService().GetSuccessResponse(SubjectList);
+                    return Task.FromResult(new BaseResponseService().GetSuccessResponse(SubjectList));
                 }
             }
             catch (Exception ex)
             {
-                return new BaseResponseService().GetErrorResponse(ex);
+                return Task.FromResult(new BaseResponseService().GetErrorResponse(ex));
             }
         }
 
@@ -110,6 +110,7 @@ namespace SchoolManagementBackend.Services
             try
             {
                 var SubDetails = _dbContext.Subjects.Where(x => x.SubjectName == subject.SubjectName).FirstOrDefault();
+
                 if (SubDetails != null)
                 {
                     return new BaseResponseService().GetSuccessResponse($"This Subject is already used.");

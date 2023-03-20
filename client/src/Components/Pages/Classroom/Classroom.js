@@ -80,8 +80,19 @@ function ClassroomPage() {
           window.location.reload();
         });
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
+      if (error.response.data.statusCode === 500) {
+        setMessage(error.response.data.data);
+        toast.success("Deleted", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        window.location.reload();
       }
     }
   };
@@ -234,7 +245,7 @@ function ClassroomPage() {
                                 onClick={(e) => {
                                   if (
                                     window.confirm(
-                                      "Are you sure you want to delete this subject?"
+                                      "Are you sure you want to delete this classroom?"
                                     )
                                   ) {
                                     onDelete(e, item.classroomId);
@@ -280,7 +291,7 @@ function ClassroomPage() {
                               onClick={(e) => {
                                 if (
                                   window.confirm(
-                                    "Are you sure you want to delete this subject?"
+                                    "Are you sure you want to delete this classroom?"
                                   )
                                 ) {
                                   onDelete(e, item.classroomId);

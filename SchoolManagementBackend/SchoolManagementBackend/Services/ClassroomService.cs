@@ -85,29 +85,28 @@ namespace SchoolManagementBackend.Services
         }
 
 
-        public async Task<BaseResponse> RemoveClass(int id)
+        public Task<BaseResponse> RemoveClass(int id)
         {
             try
             {
                 Classroom classroom = (Classroom)_dbContext.Classrooms.Where(x => x.ClassroomId == id).First();
+                var ASDetails = _dbContext.RemoveClassrooms.FromSqlRaw($"Exec RemoveClassrooms @id = {id}").ToList();
 
                 if (classroom == null)
                 {
-                    return new BaseResponseService().GetErrorResponse($"This {id} does not exist.");
+                    return Task.FromResult(new BaseResponseService().GetErrorResponse($"This {id} does not exist."));
                 }
                 else
                 {
-                    _dbContext.Classrooms.Remove(classroom);
-                    await _dbContext.SaveChangesAsync();
 
                     var classess = _dbContext.Classrooms.ToList();
 
-                    return new BaseResponseService().GetSuccessResponse(classess);
+                    return Task.FromResult(new BaseResponseService().GetSuccessResponse(classess));
                 }
             }
             catch (Exception ex)
             {
-                return new BaseResponseService().GetErrorResponse(ex);
+                return Task.FromResult(new BaseResponseService().GetErrorResponse(ex));
             }
 
         }

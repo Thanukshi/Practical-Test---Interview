@@ -6,7 +6,6 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Logo from "../../assets/images/logo.png";
 
 function NavbarPage() {
-  const [active, setActive] = useState("default");
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>

@@ -14,9 +14,16 @@ function AllocateSubjectEdit() {
   } = useForm({ mode: "onChange" });
 
   const [message, setMessage] = useState(null);
-  const [teachers, GetTeachers] = useState("");
-  const [subjects, GetSubjects] = useState("");
-  const [allocateSub, GetAllocateSub] = useState("");
+  const [teachers, GetTeachers] = useState([]);
+  const [subjects, GetSubjects] = useState([]);
+  const [allocateSub, GetAllocateSub] = useState({
+    allocateSubjectId: "",
+    firstName: "",
+    lastName: "",
+    subjectID: "",
+    subjectName: "",
+    teacherID: "",
+  });
 
   const params = useParams();
 
@@ -62,6 +69,8 @@ function AllocateSubjectEdit() {
           console.log("alll", res.data.data);
           const getData = res.data.data;
           GetAllocateSub(getData);
+
+          console.log("alll", allocateSub);
         });
     } catch (error) {
       console.log(error.response);
@@ -176,7 +185,7 @@ function AllocateSubjectEdit() {
               </div>
 
               <div className="mt-2">
-                <Link to={`/AllocateSubject`}>  
+                <Link to={`/AllocateSubject`}>
                   <button
                     type="submit"
                     className="btn btn-outline-danger"

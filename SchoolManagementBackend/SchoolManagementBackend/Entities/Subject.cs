@@ -10,8 +10,8 @@ namespace SchoolManagementBackend.Entities
             AllocateSubjects = new HashSet<AllocateSubject>();
         }
 
-        public int SubjectId { get; set; }
-        public string SubjectName { get; set; }
+        public int SubjectId { get; set; } 
+        public string SubjectName { get; set; } = null!;
 
         public virtual ICollection<AllocateSubject> AllocateSubjects { get; set; }
     }

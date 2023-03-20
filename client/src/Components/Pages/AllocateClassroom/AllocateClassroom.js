@@ -290,7 +290,7 @@ function AllocateClassroom() {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr key={item.AllocateSubjectId}>
+                          <tr key={item.allocateClassroomID}>
                             <th scope="row">{index + 1}</th>
                             <td>
                               {item.firstName} {item.lastName}
@@ -342,7 +342,7 @@ function AllocateClassroom() {
                     </thead>
                     <tbody>
                       {allocateClass.map((item, index) => (
-                        <tr key={item.AllocateSubjectId}>
+                        <tr key={item.allocateClassroomID}>
                           <th scope="row">{index + 1}</th>
                           <td>
                             {item.firstName} {item.lastName}
@@ -380,7 +380,7 @@ function AllocateClassroom() {
               </div>
             ) : (
               <div>
-                Allocated Subjects List is not found at this moment. Please try
+                Allocated Classroom List is not found at this moment. Please try
                 again later.
               </div>
             )}

@@ -139,7 +139,7 @@ function StudentEditPage() {
       <div className="container p-1">
         <div className="row align-items-start">
           <div className="col">
-            <h2 className="font-weight-bold">Add Student</h2>
+            <h2 className="font-weight-bold">Update Student</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="row align-items-center mt-4 mb-2">
