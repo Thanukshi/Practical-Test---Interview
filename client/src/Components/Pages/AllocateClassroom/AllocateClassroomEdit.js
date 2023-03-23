@@ -27,37 +27,6 @@ function AllocateClassroomEdit() {
 
   const params = useParams();
 
-  const onSubmit = async (data) => {
-    try {
-      const upData = {
-        allocateClassroomId: allocateClass.allocateClassroomId,
-        teacherId: data.teacherId,
-        classroomId: data.classroomId,
-      };
-      await axios
-        .put(`${API_URL}/AllocateClassroom/UpdateAllocateClassroom`, upData)
-        .then((res) => {
-          console.log("data", data);
-          toast.success(`Successfully.`, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          window.location.reload();
-        });
-    } catch (error) {
-      if (error.response.data.statusCode === 400) {
-        setMessage(error.response.data.data);
-      }
-      console.log("data", error);
-    }
-  };
-
   const getAllocateClassroomByID = async () => {
     try {
       await axios
@@ -100,6 +69,37 @@ function AllocateClassroomEdit() {
     }
   };
 
+  const onSubmit = async (data) => {
+    try {
+      const upData = {
+        allocateClassroomId: allocateClass.allocateClassroomID,
+        teacherId: data.teacherId,
+        classroomId: data.classroomId,
+      };
+      await axios
+        .put(`${API_URL}/AllocateClassroom/UpdateAllocateClassroom`, upData)
+        .then((res) => {
+          console.log("data", data);
+          toast.success(`Successfully.`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          window.location.href = "/AllocateClassroom";
+        });
+    } catch (error) {
+      if (error.response.data.statusCode === 400) {
+        setMessage(error.response.data.data);
+      }
+      console.log("data", error);
+    }
+  };
+
   useEffect(() => {
     getAllTeachers();
     getAllClassroom();
@@ -123,7 +123,9 @@ function AllocateClassroomEdit() {
                     <label>Teacher Name</label>
                     <select
                       className="form-control dropdown-toggle"
-                      defaultValue={allocateClass.firstName}
+                      defaultValue={
+                        allocateClass.firstName + " " + allocateClass.lastName
+                      }
                       {...register("teacherId", {
                         required: "Teacher name must be selected.",
                       })}

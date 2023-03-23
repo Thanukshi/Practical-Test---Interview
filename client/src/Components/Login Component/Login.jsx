@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import "../../assets/css/login.css";
-import Logo from "../../assets/images/logo.png";
+import "../../assets/css/newlogin.css";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
-function LoginPage() {
+function Login() {
   const {
     register,
     handleSubmit,
@@ -12,23 +13,15 @@ function LoginPage() {
   } = useForm({ mode: "onChange" });
 
   const [message, setMessage] = useState();
+  const [success, IsSuccess] = useState(false);
 
   const onSubmit = (data) => {
     if (
       data.UserEmail === "admin@gmail.com" &&
       data.UserPassword === "Admin1234"
     ) {
+      IsSuccess(true);
       window.location.href = "/navbar";
-      toast.success("Login Successful", {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
     } else {
       let msg;
       if (data.UserEmail !== "admin@gmail.com") {
@@ -44,11 +37,12 @@ function LoginPage() {
       <div className="order__left centered">
         <div className="form">
           <div className="logo">
-            <img src={Logo} style={{ width: "200px", height: "200px" }} />
+            <h1 className="mb-4">ABC SCHOOL</h1>
           </div>
-
-          <h4>Welcom Admin!</h4>
-
+          <h4 className="mb-4">
+            A learning community dedicated to building respectful and
+            responsible citizens and empowering all learners.
+          </h4>
           <form onSubmit={handleSubmit(onSubmit)}>
             <input
               type="text"
@@ -59,7 +53,7 @@ function LoginPage() {
                 required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Inccorect email address.",
+                  message: "Invalid email address.",
                 },
               })}
             />
@@ -83,9 +77,16 @@ function LoginPage() {
             <button type="submit" className="login__button">
               Login
             </button>
-            <br />
-            <br />
-            {message && <p>{message}</p>}
+            {message && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="error">{message}!</Alert>
+              </Stack>
+            )}
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">Login Successfully!</Alert>
+              </Stack>
+            )}
           </form>
         </div>
       </div>
@@ -100,4 +101,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default Login;

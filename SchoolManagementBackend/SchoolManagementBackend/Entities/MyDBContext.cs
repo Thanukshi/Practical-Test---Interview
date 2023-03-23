@@ -29,7 +29,7 @@ namespace SchoolManagementBackend.Entities
         public DbSet<Classroom> RemoveClassrooms { get; set; }
         public DbSet<Teacher> RemoveTeachers { get; set; }
 
-        public DbSet<AllocateSubject> RemoveSubjectList { get; set; }
+        public DbSet<RemoveSubject> RemoveSubjectList { get; set; }
         //public DbSet<Subject> RemoveSubjects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -255,6 +255,29 @@ namespace SchoolManagementBackend.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
+
+            modelBuilder.Entity<RemoveSubject>(entity =>
+            {
+                entity.ToTable("RemoveSubject");
+
+                entity.HasKey(e => e.RemoveID)
+                 .HasName("RemoveID");
+
+                entity.Property(e => e.ClassroomId).HasColumnName("ClassroomID");
+
+                entity.Property(e => e.TeacherId).HasColumnName("TeacherID");
+
+                //entity.HasOne(d => d.Classroom)
+                //    .WithMany(p => p.AllocateClassrooms)
+                //    .HasForeignKey(d => d.ClassroomId)
+                //    .HasConstraintName("FK_AllocateClassroom");
+
+                //entity.HasOne(d => d.Teacher)
+                //    .WithMany(p => p.AllocateClassrooms)
+                //    .HasForeignKey(d => d.TeacherId)
+                //    .HasConstraintName("FK_TeachertAllocateClassroom");
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

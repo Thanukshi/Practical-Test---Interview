@@ -58,7 +58,7 @@ function TeacherEditPage() {
             progress: undefined,
             theme: "light",
           });
-          window.location.reload();
+          window.location.href = "/Teacher";;
         });
     } catch (error) {
       if (error.response.data.statusCode === 400) {

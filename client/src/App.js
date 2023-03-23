@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LoginPage from "./Components/Login Component/LoginPage";
 import Navbar from "./Components/NavBar/Navbar";
 import SubjectPage from "./Components/Pages/Subject/Subject";
 import ClassroomPage from "./Components/Pages/Classroom/Classroom";
@@ -17,13 +16,17 @@ import TeacherEditPage from "./Components/Pages/Teacher/TeacherEdit";
 import AllocateSubjectEdit from "./Components/Pages/AllocateSubjects/AllocateSubjectEdit";
 import AllocateClassroomEdit from "./Components/Pages/AllocateClassroom/AllocateClassroomEdit";
 
+import Login from "./Components/Login Component/Login";
+
+
+
 function App() {
   return (
     <div>
       <ToastContainer />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<Login />} />
           <Route path="/navbar" element={<Navbar />} />
           <Route path="/subject" element={<SubjectPage />} />
           <Route path="/Subject/Edit/:id" element={<SubjectEditPage />} />
