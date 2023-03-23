@@ -4,7 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
-import { toast } from "react-toastify";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function StudentEditPage() {
   const {
@@ -18,9 +19,9 @@ function StudentEditPage() {
   const params = useParams();
 
   const [message, setMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [ages, setAge] = useState(null);
-  const [classrooms, GetClassrooms] = useState("");
+  const [classrooms, GetClassrooms] = useState([]);
+  const [success, IsSuccess] = useState(false);
   const [student, SetStudent] = useState({
     age: "",
     classroomID: "",
@@ -41,7 +42,6 @@ function StudentEditPage() {
         .then((res) => {
           const getData = res.data.data;
           SetStudent(getData);
-          setLoading(false);
         });
     } catch (error) {
       console.log(error.response);
@@ -68,20 +68,8 @@ function StudentEditPage() {
         .put(`${API_URL}/Student/UpdateStudent`, upData)
         .then((res) => {
           console.log("data", data);
-          toast.success(
-            `${data.firstName} ${data.lastName} is updated successfully.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          window.location.reload();
+          IsSuccess(true);
+          window.location.href = "/Student/List";
         });
     } catch (error) {
       if (error.response.data.statusCode === 400) {
@@ -117,9 +105,10 @@ function StudentEditPage() {
   const getAllClassroom = async () => {
     try {
       await axios.get(`${API_URL}/Classroom/GetClasses`).then((res) => {
-        console.log("first", res.data.data);
-        GetClassrooms(res.data.data);
-        setLoading(false);
+        const getData = res.data.data.sort((a, b) =>
+          a.classroomName > b.classroomName ? 1 : -1
+        );
+        GetClassrooms(getData);
       });
     } catch (error) {
       console.log(error.response);
@@ -357,6 +346,13 @@ function StudentEditPage() {
 
               {message && <p className="mt-4">{message}</p>}
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">
+                  Student Details Updated and Savrd Successfully!
+                </Alert>
+              </Stack>
+            )}
             <br />
             <br />
           </div>

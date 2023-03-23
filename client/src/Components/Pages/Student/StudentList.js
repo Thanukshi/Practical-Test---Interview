@@ -10,7 +10,6 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 function StudentList() {
-  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [students, GetStudents] = useState([]);
   const [searchInput, setSearchInput] = useState("");
@@ -122,9 +121,9 @@ function StudentList() {
   return (
     <div>
       <Nav></Nav>;
-      <div className="container p-0 mt-2">
+      <div className="container p-0 mt-4">
         <div className="row align-items-start">
-          <div className="col">
+          <div className="col-7">
             <h2 className="font-weight-bold">Student List</h2>
           </div>
           <div className="col" style={{ width: "100%" }}>
@@ -183,7 +182,7 @@ function StudentList() {
                     <td>
                       <p>
                         <Link to={`/Student/Edit/${item.studentID}`}>
-                          <img src={EditButton} />
+                          <img src={EditButton} alt="" />
                         </Link>
                       </p>
                     </td>
@@ -199,7 +198,7 @@ function StudentList() {
                           }
                         }}
                       >
-                        <img src={DeleteButton} />
+                        <img src={DeleteButton} alt=""/>
                       </p>
                     </td>
                   </tr>
@@ -241,7 +240,7 @@ function StudentList() {
                       <td>
                         <p>
                           <Link to={`/Student/Edit/${item.studentID}`}>
-                            <img src={EditButton} />
+                            <img src={EditButton} alt=""/>
                           </Link>
                         </p>
                       </td>
@@ -257,7 +256,7 @@ function StudentList() {
                             }
                           }}
                         >
-                          <img src={DeleteButton} />
+                          <img src={DeleteButton} alt=""/>
                         </p>
                       </td>
                     </tr>

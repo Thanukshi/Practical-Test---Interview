@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 import "../../../assets/css/common.css";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
@@ -23,6 +25,7 @@ function SubjectPage() {
   const [subjects, GetSubjects] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const [success, IsSuccess] = useState(false);
   const doc = new jsPDF("portrait");
 
   useEffect(() => {
@@ -32,16 +35,7 @@ function SubjectPage() {
   const onSubmit = async (data) => {
     try {
       await axios.post(`${API_URL}/Subject/AddSubject`, data).then((res) => {
-        toast.success(`${data.SubjectName} is added successfully.`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        IsSuccess(true);
         window.location.reload();
       });
     } catch (error) {
@@ -183,14 +177,21 @@ function SubjectPage() {
 
                 {errors.SubjectName && <p>{errors.SubjectName.message}</p>}
                 {message && <p>{message}</p>}
+                {success && (
+                  <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                    <Alert severity="success">
+                      Subject Added Successfully!
+                    </Alert>
+                  </Stack>
+                )}
               </div>
             </form>
             <br />
             <br />
 
             <div className="row  mb-3">
-              <div className="col-6" style={{ width: "100%" }}>
-                <h2 className="font-weight-bold mb-2"> Added Subject List</h2>
+              <div className="col-7" style={{ width: "100%" }}>
+                <h2 className="font-weight-bold mb-2"> Subject List</h2>
               </div>
               <div className="col ml-5 mr-0">
                 <form className="form-inline my-2 my-lg-0">
@@ -218,8 +219,8 @@ function SubjectPage() {
             ) : searchInput.length > 1 ? (
               filteredResults.map((sub, index) => {
                 return (
-                  <table class="table">
-                    <thead class="thead-dark">
+                  <table className="table">
+                    <thead className="thead-dark">
                       <tr>
                         <th scope="col">No</th>
                         <th scope="col">Subject Name</th>
@@ -234,7 +235,7 @@ function SubjectPage() {
                         <td>
                           <p>
                             <Link to={`/Subject/Edit/${sub.subjectId}`}>
-                              <img src={EditButton} />
+                              <img src={EditButton} alt="" />
                             </Link>
                           </p>
                         </td>
@@ -250,7 +251,7 @@ function SubjectPage() {
                               }
                             }}
                           >
-                            <img src={DeleteButton} />
+                            <img src={DeleteButton} alt="" />
                           </p>
                         </td>
                       </tr>
@@ -261,8 +262,8 @@ function SubjectPage() {
             ) : subjects && subjects.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">
-                  <table class="table">
-                    <thead class="thead-dark">
+                  <table className="table">
+                    <thead className="thead-dark">
                       <tr>
                         <th scope="col">No</th>
                         <th scope="col">Subject Name</th>
@@ -278,7 +279,7 @@ function SubjectPage() {
                           <td>
                             <p>
                               <Link to={`/Subject/Edit/${sub.subjectId}`}>
-                                <img src={EditButton} />
+                                <img src={EditButton} alt="" />
                               </Link>
                             </p>
                           </td>
@@ -294,7 +295,7 @@ function SubjectPage() {
                                 }
                               }}
                             >
-                              <img src={DeleteButton} />
+                              <img src={DeleteButton} alt="" />
                             </p>
                           </td>
                         </tr>

@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
-import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function ClassroomEditPage() {
   const params = useParams();
@@ -15,9 +16,10 @@ function ClassroomEditPage() {
   } = useForm({ mode: "onChange" });
 
   const [message, setMessage] = useState(null);
-  const [classroomName, setClassroomName] = useState("");
+  const [classroomName, setClassroomName] = useState([]);
+  const [success, IsSuccess] = useState(false);
 
-  const getAllSubjectByID = async () => {
+  const getClassroomByID = async () => {
     try {
       await axios
         .get(`${API_URL}/Classroom/GetClassById/${params.id}`)
@@ -40,17 +42,8 @@ function ClassroomEditPage() {
       await axios
         .put(`${API_URL}/Classroom/UpdateClassroom`, upData)
         .then((res) => {
-          toast.success(`Classroom name is added successfully.`, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          window.location.reload();
+          IsSuccess(true);
+          window.location.href = "/classroom";
         });
     } catch (error) {
       if (error.response.data.statusCode === 400) {
@@ -60,7 +53,7 @@ function ClassroomEditPage() {
   };
 
   useEffect(() => {
-    getAllSubjectByID();
+    getClassroomByID();
   }, []);
 
   return (
@@ -94,32 +87,39 @@ function ClassroomEditPage() {
                   </div>
                 </div>
                 {errors.classroomName && <p>{errors.classroomName.message}</p>}
-              </div>
-              <div className="row align-items-center mb-4">
-                <div className="col">
-                  <button
-                    type="submit"
-                    className="btn btn-outline-primary"
-                    style={{ width: "100%" }}
-                  >
-                    Save
-                  </button>
-                </div>
-
-                <div className="col">
-                  <Link to={`/classroom`}>
+                <div className="row align-items-center mt-2 ml-1 mr-1">
+                  <div className="col">
                     <button
                       type="submit"
-                      className="btn btn-outline-danger"
+                      className="btn btn-outline-primary"
                       style={{ width: "100%" }}
                     >
-                      Cancle
+                      Save
                     </button>
-                  </Link>
+                  </div>
+
+                  <div className="col">
+                    <Link to={`/classroom`}>
+                      <button
+                        type="submit"
+                        className="btn btn-outline-danger"
+                        style={{ width: "100%" }}
+                      >
+                        Cancle
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
               {message && <p>{message}</p>}
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">
+                  Classroom Name Updated and Saved Successfully!
+                </Alert>
+              </Stack>
+            )}
             <br />
             <br />
           </div>

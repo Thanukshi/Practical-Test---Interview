@@ -248,7 +248,7 @@ function AllocateSubject() {
 
             <div className="list">
               <div className="row align-items-center mt-5 mb-4">
-                <div className="col" style={{ width: "100%" }}>
+                <div className="col-7" style={{ width: "100%" }}>
                   <h2 className="font-weight-bold mb-2">
                     Allocate Subjects List
                   </h2>

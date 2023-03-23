@@ -128,17 +128,18 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                if (teacher is null)
-                {
+                var TecherDetais = _dbContext.Teachers.Where(x => x.FirstName == teacher.FirstName && x.LastName == teacher.LastName && x.ContactNo == teacher.ContactNo && x.Email == teacher.Email).FirstOrDefault();
 
-                    return new BaseResponseService().GetSuccessResponse("Invalid Inputs. Please check.");
-                }
-                else
+                if (TecherDetais is null)
                 {
                     _dbContext.Teachers.Update(teacher);
                     await _dbContext.SaveChangesAsync();
 
                     return new BaseResponseService().GetSuccessResponse(teacher);
+                }
+                else
+                {
+                    return new BaseResponseService().GetErrorResponse("This teacher details are already saved. Please check.", 400);
                 }
 
 

@@ -4,7 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
-import { toast } from "react-toastify";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function SubjectEditPage() {
   const {
@@ -14,7 +15,8 @@ function SubjectEditPage() {
   } = useForm({ mode: "onChange" });
 
   const [message, setMessage] = useState(null);
-  const [subject, setSubject] = useState("");
+  const [subject, setSubject] = useState([]);
+  const [success, IsSuccess] = useState(false);
 
   const params = useParams();
 
@@ -24,7 +26,6 @@ function SubjectEditPage() {
         .get(`${API_URL}/Subject/GetSubjectById/${params.id}`)
         .then((res) => {
           const getData = res.data.data;
-          console.log(getData);
           setSubject(getData);
         });
     } catch (error) {
@@ -41,20 +42,12 @@ function SubjectEditPage() {
       await axios
         .put(`${API_URL}/Subject/UpdateSubject`, upData)
         .then((res) => {
-          toast.success(`Subjecti is updated successfully.`, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          window.location.reload();
+          IsSuccess(true);
+          window.location.href = "/subject";
         });
     } catch (error) {
       if (error.response.data.statusCode === 400) {
+        console.log(error.response);
         setMessage(error.response.data.data);
       }
     }
@@ -96,31 +89,41 @@ function SubjectEditPage() {
                 </div>
 
                 {errors.SubjectName && <p>{errors.SubjectName.message}</p>}
-              </div>
-              <div className="row align-items-center mb-5">
-                <div className="col">
-                  <button
-                    type="submit"
-                    className="btn btn-outline-primary"
-                    style={{ width: "100%" }}
-                  >
-                    Save
-                  </button>
-                </div>
-                <div className="col">
-                  <Link to={`/subject`}>
+
+                <div className="row align-items-center mb-3">
+                  <div className="col">
                     <button
                       type="submit"
-                      className="btn btn-outline-danger"
+                      className="btn btn-outline-primary"
                       style={{ width: "100%" }}
                     >
-                      Cancle
+                      Save
                     </button>
-                  </Link>
+                  </div>
+                  <div className="col">
+                    <Link to={`/subject`}>
+                      <button
+                        type="submit"
+                        className="btn btn-outline-danger"
+                        style={{ width: "100%" }}
+                      >
+                        Cancle
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
+
               {message && <p>{message}</p>}
             </form>
+
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">
+                  Subject Updated & Saved Successfully!
+                </Alert>
+              </Stack>
+            )}
             <br />
           </div>
         </div>

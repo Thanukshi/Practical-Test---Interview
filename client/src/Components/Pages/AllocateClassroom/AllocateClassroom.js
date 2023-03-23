@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 import { Link } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
@@ -24,6 +26,7 @@ function AllocateClassroom() {
   const [allocateClass, GetAllocateClass] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const [success, IsSuccess] = useState(false);
   const doc = new jsPDF("portrait");
 
   const onSubmit = async (data) => {
@@ -31,17 +34,7 @@ function AllocateClassroom() {
       await axios
         .post(`${API_URL}/AllocateClassroom/AddAllocateClassroom`, data)
         .then((res) => {
-          console.log("data", data);
-          toast.success(`Successfully.`, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          IsSuccess(true);
           window.location.reload();
         });
     } catch (error) {
@@ -81,8 +74,10 @@ function AllocateClassroom() {
   const getAllClassroom = async () => {
     try {
       await axios.get(`${API_URL}/Classroom/GetClasses`).then((res) => {
-        console.log("first", res.data.data);
-        GetClassrooms(res.data.data);
+        const getData = res.data.data.sort((a, b) =>
+          a.classroomName > b.classroomName ? 1 : -1
+        );
+        GetClassrooms(getData);
         setLoading(false);
       });
     } catch (error) {
@@ -177,7 +172,7 @@ function AllocateClassroom() {
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="row align-items-center mb-2">
-                <div className="col-6 mt-1">
+                <div className="col-6 mt-4">
                   <div className="form-group">
                     <label>Teacher Name</label>
                     <select
@@ -202,7 +197,7 @@ function AllocateClassroom() {
                     {errors.teacherId && <p>{errors.teacherId.message}</p>}
                   </div>
                 </div>
-                <div className="col-6 mt-1">
+                <div className="col-6 mt-4">
                   <div className="form-group">
                     <label>Classroom</label>
                     <select
@@ -242,14 +237,21 @@ function AllocateClassroom() {
 
               {message && <p className="mt-4">{message}</p>}
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">
+                  Classroom Allocated Successfully!
+                </Alert>
+              </Stack>
+            )}
             <br />
             <br />
 
             <div className="row align-items-center mt-5 mb-4">
-              <div className="col" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2">
+              <div className="col-7" style={{ width: "100%" }}>
+                <h2 className="font-weight-bold mb-2">
                   Allocate Classrooms List
-                </h4>
+                </h2>
               </div>
               <div className="col ml-5 mr-0" style={{ width: "100%" }}>
                 <form className="form-inline my-2 my-lg-0">
@@ -263,7 +265,7 @@ function AllocateClassroom() {
                   />
                 </form>
               </div>
-              <div className="col buttons2  ml-5 mr-0">
+              <div className="col buttons2 ml-5 mr-0">
                 <Link onClick={downloadReport} className="button_pdf">
                   &nbsp;&nbsp;Download Report
                 </Link>

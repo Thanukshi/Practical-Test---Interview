@@ -5,6 +5,8 @@ import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function AllocateSubjectEdit() {
   const {
@@ -16,6 +18,7 @@ function AllocateSubjectEdit() {
   const [message, setMessage] = useState(null);
   const [teachers, GetTeachers] = useState([]);
   const [subjects, GetSubjects] = useState([]);
+  const [success, IsSuccess] = useState(false);
   const [allocateSub, GetAllocateSub] = useState({
     allocateSubjectId: "",
     firstName: "",
@@ -37,21 +40,8 @@ function AllocateSubjectEdit() {
       await axios
         .put(`${API_URL}/AllocateSubject/UpdateAllocateSubject`, upData)
         .then((res) => {
-          console.log("data", data);
-          toast.success(
-            `${data.subjectId} is allocated  to ${data.teacherId} successfully.`,
-            {
-              position: "bottom-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
-          );
-          window.location.reload();
+          IsSuccess(true);
+          window.location.href = "/AllocateSubject";
         });
     } catch (error) {
       if (error.response.data.statusCode === 400) {
@@ -196,6 +186,13 @@ function AllocateSubjectEdit() {
                 </Link>
               </div>
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">
+                  Allocate Subject Details Updated & Saved Successfully!
+                </Alert>
+              </Stack>
+            )}
             <br />
             <br />
           </div>

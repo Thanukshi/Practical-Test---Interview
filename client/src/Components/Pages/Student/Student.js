@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Nav from "../../NavBar/Navbar.js";
 import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
-import { toast } from "react-toastify";
-import EditButton from "../../../assets/images/edit.png";
-import DeleteButton from "../../../assets/images/delete.png";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function StudentPage() {
   const {
@@ -18,27 +17,15 @@ function StudentPage() {
   });
 
   const [message, setMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [age, setAge] = useState(null);
   const [classrooms, GetClassrooms] = useState([]);
+  const [success, IsSuccess] = useState(false);
 
   const onSubmit = async (data) => {
     try {
       await axios.post(`${API_URL}/Student/AddStudent`, data).then((res) => {
         console.log("data", data);
-        toast.success(
-          `${data.firstName} ${data.lastName} is added successfully.`,
-          {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
+        IsSuccess(true);
         window.location.reload();
       });
     } catch (error) {
@@ -62,11 +49,8 @@ function StudentPage() {
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    console.log("age", age);
     if (6 > age && 18 < age) {
-      setAge("You are not a valid student.(Age between 6-18) ");
-    } else {
-      setAge(age);
+      setMessage("You are not a valid student.(Age between 6-18) ");
     }
     setAge(age);
     return age;
@@ -75,9 +59,10 @@ function StudentPage() {
   const getAllClassroom = async () => {
     try {
       await axios.get(`${API_URL}/Classroom/GetClasses`).then((res) => {
-        console.log("first", res.data.data);
-        GetClassrooms(res.data.data);
-        setLoading(false);
+        const getData = res.data.data.sort((a, b) =>
+          a.classroomName > b.classroomName ? 1 : -1
+        );
+        GetClassrooms(getData);
       });
     } catch (error) {
       console.log(error.response);
@@ -273,7 +258,6 @@ function StudentPage() {
                         required: "Age must be filled.",
                       })}
                     />
-
                     {errors.age && <p>{errors.age.message}</p>}
                   </div>
                 </div>
@@ -291,6 +275,11 @@ function StudentPage() {
 
               {message && <p className="mt-4">{message}</p>}
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">Student Added Successfully!</Alert>
+              </Stack>
+            )}
           </div>
         </div>
       </div>

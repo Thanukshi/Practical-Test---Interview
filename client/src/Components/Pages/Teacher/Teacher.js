@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 import { Link } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
@@ -22,6 +24,7 @@ function TeacherPage() {
   const [teachers, GetTeachers] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const [success, IsSuccess] = useState(false);
   const doc = new jsPDF("landscape");
 
   useEffect(() => {
@@ -32,16 +35,7 @@ function TeacherPage() {
     try {
       await axios.post(`${API_URL}/Teacher/AddTeacher`, data).then((res) => {
         console.log("data", data);
-        toast.success(`${data.SubjectName} is added successfully.`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        IsSuccess(true);
         window.location.reload();
       });
     } catch (error) {
@@ -155,7 +149,7 @@ function TeacherPage() {
 
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="row align-items-center mb-2">
-                <div className="col-6 mt-1">
+                <div className="col-6 mt-3">
                   <div className="form-group">
                     <label>First Name</label>
                     <input
@@ -175,7 +169,7 @@ function TeacherPage() {
                     {errors.FirstName && <p>{errors.FirstName.message}</p>}
                   </div>
                 </div>
-                <div className="col-6 mt-1">
+                <div className="col-6 mt-3">
                   <div className="form-group">
                     <label>Last Name</label>
                     <input
@@ -256,11 +250,16 @@ function TeacherPage() {
 
               {message && <p className="mt-4">{message}</p>}
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">Teacher Added Successfully!</Alert>
+              </Stack>
+            )}
             <br />
             <br />
 
             <div className="row align-items-center mt-5 mb-4">
-              <div className="col" style={{ width: "100%" }}>
+              <div className="col-7" style={{ width: "100%" }}>
                 <h2 className="font-weight-bold mb-2"> Teachers List</h2>
               </div>
               <div className="col ml-5 mr-0" style={{ width: "100%" }}>
@@ -289,8 +288,8 @@ function TeacherPage() {
             ) : searchInput.length > 1 ? (
               filteredResults.map((t, index) => {
                 return (
-                  <table class="table">
-                    <thead class="thead-dark">
+                  <table className="table">
+                    <thead className="thead-dark">
                       <tr>
                         <th scope="col">No</th>
                         <th scope="col">Name</th>
@@ -311,7 +310,7 @@ function TeacherPage() {
                         <td>
                           <p>
                             <Link to={`/Teacher/Edit/${t.teacherId}`}>
-                              <img src={EditButton} />
+                              <img src={EditButton} alt="" />
                             </Link>
                           </p>
                         </td>
@@ -327,7 +326,7 @@ function TeacherPage() {
                               }
                             }}
                           >
-                            <img src={DeleteButton} />
+                            <img src={DeleteButton} alt="" />
                           </p>
                         </td>
                       </tr>
@@ -338,8 +337,8 @@ function TeacherPage() {
             ) : teachers && teachers.length > 0 ? (
               <div className="row align-items-center">
                 <div className="col">
-                  <table class="table">
-                    <thead class="thead-dark">
+                  <table className="table">
+                    <thead className="thead-dark">
                       <tr>
                         <th scope="col">No</th>
                         <th scope="col">Name</th>
@@ -361,7 +360,7 @@ function TeacherPage() {
                           <td>
                             <p>
                               <Link to={`/Teacher/Edit/${t.teacherId}`}>
-                                <img src={EditButton} />
+                                <img src={EditButton} alt="" />
                               </Link>
                             </p>
                           </td>
@@ -377,7 +376,7 @@ function TeacherPage() {
                                 }
                               }}
                             >
-                              <img src={DeleteButton} />
+                              <img src={DeleteButton} alt="" />
                             </p>
                           </td>
                         </tr>

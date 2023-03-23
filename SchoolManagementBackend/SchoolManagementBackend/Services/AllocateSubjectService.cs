@@ -120,7 +120,7 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                var subName = _dbContext.AllocateSubjects.AsNoTracking().Where(x => x.AllocateSubjectId == allocateSubject.AllocateSubjectId).FirstOrDefault();
+                var subName = _dbContext.AllocateSubjects.Where(x => x.SubjectId == allocateSubject.SubjectId && x.TeacherId == x.TeacherId).FirstOrDefault();
                 if (subName is null)
                 {
                     _dbContext.AllocateSubjects.Update(allocateSubject);
@@ -130,7 +130,7 @@ namespace SchoolManagementBackend.Services
                 }
                 else
                 {
-                    return new BaseResponseService().GetSuccessResponse($"This allocation is already used.");
+                    return new BaseResponseService().GetErrorResponse($"This subject allocation is already used.", 400);
                 }
 
 

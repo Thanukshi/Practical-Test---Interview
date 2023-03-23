@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import "../../assets/css/newlogin.css";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
@@ -23,7 +22,6 @@ function Login() {
       IsSuccess(true);
       window.location.href = "/navbar";
     } else {
-      let msg;
       if (data.UserEmail !== "admin@gmail.com") {
         setMessage("Email is invalid. Pleace check again.");
       } else if (data.UserPassword !== "Admin1234") {
@@ -77,11 +75,7 @@ function Login() {
             <button type="submit" className="login__button">
               Login
             </button>
-            {message && (
-              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
-                <Alert severity="error">{message}!</Alert>
-              </Stack>
-            )}
+            {message && <p severity="error">{message}</p>}
             {success && (
               <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
                 <Alert severity="success">Login Successfully!</Alert>
@@ -94,7 +88,7 @@ function Login() {
         <img
           className="img"
           src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX15583278.jpg"
-          alt="picture"
+          alt=""
         />
       </div>
     </div>

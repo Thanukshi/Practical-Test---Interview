@@ -85,7 +85,7 @@ namespace SchoolManagementBackend.Services
             {
                 Subject subjects = (Subject)_dbContext.Subjects.Where(x => x.SubjectId == id).First();
 
-               var subDetails = _dbContext.RemoveSubjectList.FromSqlRaw($"Exec RemoveSubjectList @id = {id}").ToList();
+                var subDetails = _dbContext.RemoveSubjectList.FromSqlRaw($"Exec RemoveSubjectList @id = {id}").ToList();
 
                 if (subjects is null)
                 {
@@ -111,17 +111,17 @@ namespace SchoolManagementBackend.Services
             {
                 var SubDetails = _dbContext.Subjects.Where(x => x.SubjectName == subject.SubjectName).FirstOrDefault();
 
-                if (SubDetails != null)
-                {
-                    return new BaseResponseService().GetSuccessResponse($"This Subject is already used.");
-
-                }
-                else
+                if (SubDetails is null)
                 {
                     _dbContext.Subjects.Update(subject);
                     await _dbContext.SaveChangesAsync();
 
                     return new BaseResponseService().GetSuccessResponse(subject);
+
+                }
+                else
+                {
+                    return new BaseResponseService().GetErrorResponse($"This {subject.SubjectName} is already used.", 400);
                 }
 
             }

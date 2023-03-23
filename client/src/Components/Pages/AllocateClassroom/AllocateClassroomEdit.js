@@ -5,6 +5,8 @@ import axios from "axios";
 import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 
 function AllocateClassroomEdit() {
   const {
@@ -16,6 +18,7 @@ function AllocateClassroomEdit() {
   const [message, setMessage] = useState(null);
   const [teachers, GetTeachers] = useState([]);
   const [classrooms, GetClassrooms] = useState([]);
+  const [success, IsSuccess] = useState(false);
   const [allocateClass, GetAllocateClass] = useState({
     allocateClassroomID: "",
     classroomID: "",
@@ -61,8 +64,10 @@ function AllocateClassroomEdit() {
   const getAllClassroom = async () => {
     try {
       await axios.get(`${API_URL}/Classroom/GetClasses`).then((res) => {
-        console.log("first", res.data.data);
-        GetClassrooms(res.data.data);
+        const getData = res.data.data.sort((a, b) =>
+          a.classroomName > b.classroomName ? 1 : -1
+        );
+        GetClassrooms(getData);
       });
     } catch (error) {
       console.log(error.response);
@@ -79,17 +84,7 @@ function AllocateClassroomEdit() {
       await axios
         .put(`${API_URL}/AllocateClassroom/UpdateAllocateClassroom`, upData)
         .then((res) => {
-          console.log("data", data);
-          toast.success(`Successfully.`, {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          IsSuccess(true);
           window.location.href = "/AllocateClassroom";
         });
     } catch (error) {
@@ -197,6 +192,13 @@ function AllocateClassroomEdit() {
                 </Link>
               </div>
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">
+                  Allocate Classroom and Teacher Detais Updated Successfully!
+                </Alert>
+              </Stack>
+            )}
             <br />
             <br />
           </div>

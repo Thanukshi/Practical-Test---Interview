@@ -18,7 +18,7 @@ h2 {
     font-size: 18px;
     font-family: 'Times New Roman', Times, serif;  
 }
-label, select, button{
+label, select{
     color: black;
     text-align: left;
     margin-bottom: 30px;

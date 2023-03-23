@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
 import { Link } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
@@ -22,6 +24,7 @@ function ClassroomPage() {
   const [classroom, GetClassroom] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const [success, IsSuccess] = useState(false);
   const doc = new jsPDF("portrait");
 
   useEffect(() => {
@@ -31,16 +34,7 @@ function ClassroomPage() {
   const onSubmit = async (data) => {
     try {
       await axios.post(`${API_URL}/Classroom/AddClass`, data).then((res) => {
-        toast.success(`${data.ClassroomName} is added successfully.`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        IsSuccess(true);
         window.location.reload();
       });
     } catch (error) {
@@ -53,7 +47,10 @@ function ClassroomPage() {
   const getAllClassrooms = async () => {
     try {
       await axios.get(`${API_URL}/Classroom/GetClasses`).then((res) => {
-        GetClassroom(res.data.data);
+        const getData = res.data.data.sort((a, b) =>
+          a.classroomName > b.classroomName ? 1 : -1
+        );
+        GetClassroom(getData);
         setLoading(false);
       });
     } catch (error) {
@@ -183,11 +180,16 @@ function ClassroomPage() {
                 {message && <p>{message}</p>}
               </div>
             </form>
+            {success && (
+              <Stack className="mt-3" sx={{ width: "100%" }} spacing={2}>
+                <Alert severity="success">Classroom Added Successfully!</Alert>
+              </Stack>
+            )}
             <br />
             <br />
 
             <div className="row align-items-center mb-3">
-              <div className="col" style={{ width: "100%" }}>
+              <div className="col-7" style={{ width: "100%" }}>
                 <h2 className="font-weight-bold mb-2"> Classroom List</h2>
               </div>
               <div className="col" style={{ width: "100%" }}>
@@ -236,7 +238,7 @@ function ClassroomPage() {
                                 <Link
                                   to={`/classroom/edit/${item.classroomId}`}
                                 >
-                                  <img src={EditButton} />
+                                  <img src={EditButton} alt="" />
                                 </Link>
                               </p>
                             </td>
@@ -252,7 +254,7 @@ function ClassroomPage() {
                                   }
                                 }}
                               >
-                                <img src={DeleteButton} />
+                                <img src={DeleteButton} alt="" />
                               </p>
                             </td>
                           </tr>
@@ -282,7 +284,7 @@ function ClassroomPage() {
                           <td>
                             <p>
                               <Link to={`/classroom/edit/${item.classroomId}`}>
-                                <img src={EditButton} />
+                                <img src={EditButton} alt="" />
                               </Link>
                             </p>
                           </td>
@@ -298,7 +300,7 @@ function ClassroomPage() {
                                 }
                               }}
                             >
-                              <img src={DeleteButton} />
+                              <img src={DeleteButton} alt="" />
                             </p>
                           </td>
                         </tr>

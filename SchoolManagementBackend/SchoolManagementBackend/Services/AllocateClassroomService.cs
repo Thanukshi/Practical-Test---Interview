@@ -119,7 +119,7 @@ namespace SchoolManagementBackend.Services
         {
             try
             {
-                var className = _dbContext.AllocateClassrooms.AsNoTracking().Where(x => x.ClassroomId == allocateClassroom.ClassroomId).FirstOrDefault();
+                var className = _dbContext.AllocateClassrooms.Where(x => x.TeacherId == allocateClassroom.TeacherId && x.ClassroomId == allocateClassroom.ClassroomId).FirstOrDefault();
                 if (className is null)
                 {
                     _dbContext.AllocateClassrooms.Update(allocateClassroom);
@@ -129,7 +129,7 @@ namespace SchoolManagementBackend.Services
                 }
                 else
                 {
-                    return new BaseResponseService().GetSuccessResponse($"This allocation is already used.");
+                    return new BaseResponseService().GetErrorResponse($"This allocation is already used.",400);
                 }
 
 
