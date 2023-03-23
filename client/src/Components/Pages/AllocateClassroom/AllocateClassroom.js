@@ -379,7 +379,7 @@ function AllocateClassroom() {
                 </div>
               </div>
             ) : (
-              <div>
+              <div className="not_found mt-4">
                 Allocated Classroom List is not found at this moment. Please try
                 again later.
               </div>

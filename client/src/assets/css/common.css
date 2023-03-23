@@ -1,0 +1,30 @@
+.list{
+    width: 100%;
+}
+h2 {
+    color: #7537b0;
+    text-align: left;
+    margin-bottom: 30px;
+    letter-spacing: 0.2px;
+    line-height: 20px;
+    font-family: 'Times New Roman', Times, serif; 
+    
+}
+.button_pdf, .not_found{
+    text-align: left;
+    margin-bottom: 30px;
+    letter-spacing: 0.2px;
+    line-height: 20px;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;  
+}
+label, select, button{
+    color: black;
+    text-align: left;
+    margin-bottom: 30px;
+    letter-spacing: 0.2px;
+    line-height: 20px;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;  
+}
+

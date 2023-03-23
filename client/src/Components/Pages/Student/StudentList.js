@@ -267,7 +267,7 @@ function StudentList() {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="not_found mt-4">
             Student List is not found at this moment. Please try again later.
             <br />
             <br />

@@ -188,7 +188,7 @@ function ClassroomPage() {
 
             <div className="row align-items-center mb-3">
               <div className="col" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2"> Classroom List</h4>
+                <h2 className="font-weight-bold mb-2"> Classroom List</h2>
               </div>
               <div className="col" style={{ width: "100%" }}>
                 <form className="form-inline my-2 my-lg-0">
@@ -308,7 +308,7 @@ function ClassroomPage() {
                 </div>
               </div>
             ) : (
-              <div>
+              <div className="not_found mt-4">
                 Classroom List is not found at this moment. Please try again
                 later.
               </div>

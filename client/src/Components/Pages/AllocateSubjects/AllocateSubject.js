@@ -246,30 +246,32 @@ function AllocateSubject() {
             <br />
             <br />
 
-            <div className="row align-items-center mt-5 mb-4">
-              <div className="col" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2">
-                  Allocate Subjects List
-                </h4>
-              </div>
-              <div className="col  ml-5 mr-0" style={{ width: "100%" }}>
-                <form className="form-inline my-2 my-lg-0">
-                  <input
-                    className="form-control mr-sm-2"
-                    type="search"
-                    placeholder="Search..."
-                    style={{ width: "110%", border: "rounded-5" }}
-                    aria-label="Search"
-                    onChange={(e) => searchItems(e.target.value)}
-                  />
-                </form>
-              </div>
-              <div className="col buttons2  ml-5 mr-0">
-                <Link onClick={downloadReport} className="button_pdf">
-                  &nbsp;&nbsp;Download Report
-                </Link>
-                <br />
-                <br />
+            <div className="list">
+              <div className="row align-items-center mt-5 mb-4">
+                <div className="col" style={{ width: "100%" }}>
+                  <h2 className="font-weight-bold mb-2">
+                    Allocate Subjects List
+                  </h2>
+                </div>
+                <div className="col  ml-5 mr-0" style={{ width: "100%" }}>
+                  <form className="form-inline my-2 my-lg-0">
+                    <input
+                      className="form-control mr-sm-2"
+                      type="search"
+                      placeholder="Search..."
+                      style={{ width: "110%", border: "rounded-5" }}
+                      aria-label="Search"
+                      onChange={(e) => searchItems(e.target.value)}
+                    />
+                  </form>
+                </div>
+                <div className="col buttons2  ml-5 mr-0">
+                  <Link onClick={downloadReport} className="button_pdf">
+                    &nbsp;&nbsp;Download Report
+                  </Link>
+                  <br />
+                  <br />
+                </div>
               </div>
             </div>
 
@@ -378,7 +380,7 @@ function AllocateSubject() {
                 </div>
               </div>
             ) : (
-              <div>
+              <div className="not_found mt-4">
                 Allocated Subjects List is not found at this moment. Please try
                 again later.
               </div>

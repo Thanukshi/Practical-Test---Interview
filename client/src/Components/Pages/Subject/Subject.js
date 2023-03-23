@@ -7,6 +7,7 @@ import { API_URL } from "../../../Data/API.js";
 import { toast } from "react-toastify";
 import EditButton from "../../../assets/images/edit.png";
 import DeleteButton from "../../../assets/images/delete.png";
+import "../../../assets/css/common.css";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
@@ -189,7 +190,7 @@ function SubjectPage() {
 
             <div className="row  mb-3">
               <div className="col-6" style={{ width: "100%" }}>
-                <h4 className="font-weight-bold mb-2"> Subjects List</h4>
+                <h2 className="font-weight-bold mb-2"> Added Subject List</h2>
               </div>
               <div className="col ml-5 mr-0">
                 <form className="form-inline my-2 my-lg-0">
@@ -303,7 +304,7 @@ function SubjectPage() {
                 </div>
               </div>
             ) : (
-              <div>
+              <div className="not_found mt-4">
                 Subject List is not found at this moment. Please try again
                 later.
               </div>
